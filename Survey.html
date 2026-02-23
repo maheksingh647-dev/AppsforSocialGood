@@ -3,132 +3,392 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full Width Google Form & Survey</title>
+    <title>Survey - Community Connect</title>
 
     <style>
+        /* ---------- GLOBAL & VARIABLES (From Index) ---------- */
+        :root {
+            --primary: #2F80ED;
+            --secondary: #27AE60;
+            --accent: #FFD54F;
+            --text-dark: #333;
+            --text-light: #f5f5f5;
+            --bg-body: #f4f7fb;
+            --bg-card: #ffffff;
+            --shadow: 0 10px 25px rgba(0,0,0,0.08);
+            --transition: all 0.3s ease;
+            --danger: #e74c3c;
+        }
+
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f9; /* Light background for better contrast */
-            color: #333;
+            background: var(--bg-body);
+            color: var(--text-dark);
+            transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
         }
 
-        h2 {
+        .dark-mode {
+            --bg-body: #121212;
+            --text-dark: #f5f5f5;
+            --bg-card: #1e1e1e;
+            --shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; padding: 0; }
+
+        /* ---------- HEADER & NAV (From Index) ---------- */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 40px 20px;
             text-align: center;
-            padding: 20px 0;
-            background-color: #fff;
-            margin-top: 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
         }
 
-        /* Container for the Google Form */
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .logo svg {
+            width: 48px;
+            height: 48px;
+            animation: pulse 2s infinite;
+        }
+
+        header p {
+            margin: 0;
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        nav {
+            background: var(--primary);
+            padding: 12px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(47, 128, 237, 0.3);
+            text-align: center;
+            white-space: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        nav::-webkit-scrollbar { display: none; }
+        nav { -ms-overflow-style: none; scrollbar-width: none; }
+
+        nav a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95em;
+            display: inline-block;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--accent);
+            transition: width 0.3s, left 0.3s;
+        }
+
+        nav a:hover { color: var(--accent); }
+        nav a:hover::after { width: 100%; left: 0; }
+
+        /* Highlighting the active tab */
+        nav a.active {
+            color: var(--accent);
+        }
+        nav a.active::after {
+            width: 100%;
+            left: 0;
+        }
+
+        /* ---------- THEME TOGGLE ---------- */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1001;
+            background: rgba(255,255,255,0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: transform 0.3s;
+        }
+
+        .theme-toggle:hover { transform: rotate(15deg) scale(1.1); }
+
+        /* ---------- LAYOUT SECTIONS (Adapted from Index) ---------- */
+        section {
+            padding: 60px 10%;
+            margin: 30px auto;
+            background: var(--bg-card);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 1000px; /* Slightly narrower for forms */
+            box-shadow: var(--shadow);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        section.show { opacity: 1; transform: translateY(0); }
+
+        section h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--primary);
+            position: relative;
+        }
+
+        section h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--secondary);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        .dark-mode section h2 { color: var(--secondary); }
+
+        /* ---------- GOOGLE FORM STYLING ---------- */
         .form-container {
             width: 100%;
-            max-width: 800px; /* Prevents it from getting too wide on huge screens */
-            margin: 0 auto;   /* Centers the container */
-            background: #fff;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            height: 800px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .dark-mode .form-container {
+            border: 1px solid #333;
         }
 
-        /* Iframe styling */
         iframe {
             width: 100%;
-            height: 800px;   /* Fixed height instead of 100vh so the survey below is visible */
+            height: 100%;
             border: none;
             display: block;
         }
 
-        /* Survey Section Styling */
-        .survey-section {
-            max-width: 800px;
-            margin: 30px auto;
-            padding: 20px;
-            background: #fff;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            border-radius: 8px;
+        /* ---------- JS POLL STYLING ---------- */
+        .survey-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         .question-item {
-            margin-bottom: 20px;
             padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .dark-mode .question-item {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .question-text {
             font-weight: bold;
             display: block;
+            margin-bottom: 15px;
+            font-size: 1.15em;
+            line-height: 1.4;
+        }
+
+        .vote-buttons {
+            display: flex;
+            gap: 15px;
             margin-bottom: 10px;
-            font-size: 1.1em;
-        }
-
-        /* Button Styling */
-        button {
-            padding: 10px 20px;
-            margin-right: 10px;
-            cursor: pointer;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 14px;
-            transition: background 0.3s;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        /* Summary Button styling */
-        #summary-btn {
-            background-color: #28a745;
-            width: 100%;
-            font-size: 16px;
-            padding: 12px;
-            margin-top: 10px;
-        }
-
-        #summary-btn:hover {
-            background-color: #218838;
         }
 
         .result-text {
             margin-top: 5px;
-            font-size: 0.9em;
-            color: #666;
+            font-size: 0.95em;
+            color: var(--text-dark);
+            opacity: 0.8;
+            background: rgba(0,0,0,0.05);
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: inline-block;
         }
         
-        #summary {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #e9ecef;
-            border-radius: 4px;
-            text-align: center;
+        .dark-mode .result-text {
+            background: rgba(255,255,255,0.1);
         }
+
+        /* Buttons based on Index style */
+        .btn {
+            display: inline-block; 
+            padding: 10px 25px;
+            color: white; 
+            border-radius: 5px;
+            font-size: 0.95em; 
+            transition: var(--transition); 
+            border: none; 
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover { transform: translateY(-2px); }
+
+        .btn-yes { background-color: var(--secondary); }
+        .btn-yes:hover { background-color: #219150; }
+
+        .btn-no { background-color: var(--danger); }
+        .btn-no:hover { background-color: #c0392b; }
+
+        #summary-btn {
+            background-color: var(--primary);
+            width: 100%;
+            font-size: 1.1em;
+            padding: 15px;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        #summary-btn:hover { background-color: #1a6ddb; }
+
+        #summary {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: rgba(39, 174, 96, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--secondary);
+            display: none; /* Hidden by default */
+        }
+
+        /* ---------- FOOTER ---------- */
+        footer {
+            background: linear-gradient(135deg, #2c3e50, #000000);
+            color: white; text-align: center; padding: 40px 20px; margin-top: 50px;
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 768px) {
+            section { padding: 40px 5%; width: 95%; }
+            .form-container { height: 600px; }
+            .vote-buttons { flex-direction: column; }
+            .btn { width: 100%; text-align: center; }
+        }
+
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
 
-    <h2>Student Admission Form</h2>
+<!-- Header -->
+<header>
+    <div class="logo">
+        <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
+            <rect x="18" y="8" width="28" height="48" rx="5" fill="#2F80ED"/>
+            <rect x="21" y="12" width="22" height="36" rx="2" fill="#E3F2FD"/>
+            <circle cx="32" cy="50" r="2" fill="#2F80ED"/>
+            <circle cx="16" cy="32" r="4" fill="#27AE60"/>
+            <circle cx="48" cy="32" r="4" fill="#27AE60"/>
+            <circle cx="32" cy="6" r="4" fill="#27AE60"/>
+            <line x1="16" y1="32" x2="32" y2="32" stroke="#27AE60" stroke-width="2"/>
+            <line x1="48" y1="32" x2="32" y2="32" stroke="#27AE60" stroke-width="2"/>
+        </svg>
+        Community Connect
+    </div>
+    <p>Mobile Apps Empowering Community Services</p>
+</header>
 
+<!-- Navigation -->
+<nav>
+   <a href="index.html">Home</a>
+   <a href="Research.html">Research Findings</a>
+   <a href="Awareness.html">Awareness Tips</a>
+   <!-- Added 'active' class to indicate current page -->
+   <a href="Survey.html" class="active">Survey</a>
+   <a href="MediaGallery.html">Media Gallery</a>
+   <a href="Interactive.html">Interactive Chatbox</a>
+   <a href="Resources.html">Resources</a>
+   <a href="Communityforum.html">Community Forum</a>
+   <a href="Contact.html">Contact</a>
+</nav>
+
+<!-- Theme Toggle -->
+<div class="theme-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">🌙</div>
+
+<!-- MAIN CONTENT -->
+
+<!-- Google Form Section -->
+<section id="google-form-section">
+    <h2>Student Admission Form</h2>
     <div class="form-container">
-        <!-- Added embedded=true to URL for better rendering -->
-        <iframe title="google form"
+        <!-- Embedded=true for better rendering -->
+        <iframe title="Student Admission Form"
             src="https://docs.google.com/forms/d/e/1FAIpQLScyeuczllaXhio7YDHKgw7GLt5OPd3-u682sBISLwE_NU-x2g/viewform?embedded=true">
         </iframe>
     </div>
+</section>
 
+<!-- JS Interactive Poll Section -->
+<section id="poll-section">
     <h2>📊 Online Community Survey</h2>
+    <p style="text-align: center; margin-bottom: 30px; opacity: 0.8;">We value your feedback on digital services. Please answer the questions below.</p>
     
-    <div class="survey-section">
-        <div id="survey"></div>
-        
-        <button id="summary-btn" onclick="showSummary()">Show Final Summary</button>
-        <div id="summary"></div>
-    </div>
-        
-    <script>
-  // Questions related to mobile apps in community services
-  const questions = [
+    <div id="survey" class="survey-list"></div>
+    
+    <button id="summary-btn" class="btn" onclick="showSummary()">Show Final Summary</button>
+    
+    <div id="summary"></div>
+</section>
+
+<footer>
+    <p>© 2026 Community Connect | Empowering Digital Communities</p>
+</footer>
+
+<script>
+/* ---------- 1. DARK MODE LOGIC (From Index) ---------- */
+function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+    const icon = document.querySelector(".theme-toggle");
+    icon.textContent = document.body.classList.contains("dark-mode") ? "☀️" : "🌙";
+}
+
+/* ---------- 2. SCROLL REVEAL ANIMATION (From Index) ---------- */
+const observerOptions = { threshold: 0.15 };
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('show');
+    });
+}, observerOptions);
+
+document.querySelectorAll("section").forEach(section => observer.observe(section));
+
+/* ---------- 3. SURVEY LOGIC (Adapted) ---------- */
+const questions = [
     "Do you use mobile apps for local government services?",
     "Are apps effective for reporting community issues?",
     "Do you prefer booking appointments via apps?",
@@ -139,57 +399,62 @@
     "Are mobile apps helpful for emergency alerts?",
     "Is digital access through apps inclusive for everyone?",
     "Should more community services move to mobile apps?"
-  ];
+];
 
-  // Store votes
-  let votes = [];
+let votes = [];
 
-  // Initialize votes array
-  for (let i = 0; i < questions.length; i++) {
+// Initialize votes
+for (let i = 0; i < questions.length; i++) {
     votes[i] = { yes: 0, no: 0 };
-  }
+}
 
-  // Display questions
-  const surveyDiv = document.getElementById("survey");
+// Render Questions with New Styling
+const surveyDiv = document.getElementById("survey");
 
-  for (let i = 0; i < questions.length; i++) {
-    // Create elements using template literals for cleaner HTML
+for (let i = 0; i < questions.length; i++) {
+    // Updated HTML template to match the design system
     let questionHTML = `
       <div class="question-item">
         <span class="question-text">Q${i + 1}. ${questions[i]}</span>
-        <button onclick="vote(${i}, 'yes')">Yes</button>
-        <button onclick="vote(${i}, 'no')">No</button>
+        <div class="vote-buttons">
+            <button class="btn btn-yes" onclick="vote(${i}, 'yes')">Yes</button>
+            <button class="btn btn-no" onclick="vote(${i}, 'no')">No</button>
+        </div>
         <div class="result-text" id='result${i}'>Yes: 0 | No: 0</div>
       </div>
     `;
     surveyDiv.innerHTML += questionHTML;
-  }
+}
 
-  // Vote function
-  function vote(q, choice) {
+function vote(q, choice) {
     if (choice === "yes") votes[q].yes++;
     if (choice === "no") votes[q].no++;
 
     document.getElementById("result" + q).innerHTML =
       `Yes: ${votes[q].yes} | No: ${votes[q].no}`;
-  }
+}
 
-  // Summary function
-  function showSummary() {
+function showSummary() {
     let totalYes = 0;
     let totalNo = 0;
-    let text = "";
+    let text = "<h3>Survey Results</h3>";
 
     for (let i = 0; i < votes.length; i++) {
-      totalYes += votes[i].yes;
-      totalNo += votes[i].no;
+        totalYes += votes[i].yes;
+        totalNo += votes[i].no;
     }
 
-    text += `<p><strong>Total Yes:</strong> ${totalYes}</p>`;
-    text += `<p><strong>Total No:</strong> ${totalNo}</p>`;
+    text += `<p><strong>Total Yes Votes:</strong> ${totalYes}</p>`;
+    text += `<p><strong>Total No Votes:</strong> ${totalNo}</p>`;
 
-    document.getElementById("summary").innerHTML = text;
-  }
-</script>       
+    const summaryDiv = document.getElementById("summary");
+    summaryDiv.innerHTML = text;
+    
+    // Fade in effect for summary
+    summaryDiv.style.display = 'block';
+    summaryDiv.style.animation = 'pulse 0.5s ease-out';
+}
+</script> 
+
 </body>
 </html>
