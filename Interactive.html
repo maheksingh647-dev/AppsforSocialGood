@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Connect - FAQ & Contact</title>
+
+    <style>
+        /* ---------- GLOBAL VARIABLES ---------- */
+        :root {
+            --primary-bg: #f4f7fb;
+            --text-color: #333;
+            --section-bg: #ffffff;
+            --nav-bg: #1E88E5;
+            --header-grad: linear-gradient(135deg, #2F80ED, #27AE60);
+            --chat-blue: #2F80ED;
+            --chat-green: #27AE60;
+            --faq-border: #eee;
+            --faq-hover: #f9f9f9;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-color);
+            transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        /* Dark Mode Overrides */
+        body.dark-mode {
+            --primary-bg: #121212;
+            --text-color: #e0e0e0;
+            --section-bg: #1e1e1e;
+            --nav-bg: #0d47a1;
+            --faq-border: #333;
+            --faq-hover: #2c2c2c;
+        }
+
+        /* ---------- HEADER ---------- */
+        header {
+            background: var(--header-grad);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .logo svg {
+            width: 45px;
+            animation: pulse 2s infinite;
+        }
+
+        header p {
+            margin-top: 10px;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* ---------- NAV ---------- */
+        nav {
+            background: var(--nav-bg);
+            padding: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            white-space: nowrap;
+            overflow-x: auto;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95em;
+            display: inline-block;
+            transition: opacity 0.2s;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        /* ---------- THEME TOGGLE ---------- */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            background: rgba(255,255,255,0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1100;
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s;
+        }
+        .theme-toggle:hover { transform: rotate(15deg) scale(1.1); }
+
+        /* ---------- SECTIONS GENERAL ---------- */
+        section {
+            padding: 60px 10%;
+            margin: 40px auto;
+            background: var(--section-bg);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 1200px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 0.8s ease;
+        }
+
+        section.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ---------- CONTACT SECTION ---------- */
+        #contact {
+            text-align: center;
+        }
+        
+        #contact h2 {
+            font-size: 2.2em;
+            color: var(--nav-bg);
+            margin-bottom: 15px;
+        }
+
+        #contact p {
+            font-size: 1.1em;
+            color: var(--text-color);
+            margin-bottom: 30px;
+        }
+
+        .contact-btn {
+            padding: 15px 30px;
+            background: var(--chat-blue);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .contact-btn:hover {
+            background: #1a5bb8;
+            transform: translateY(-2px);
+        }
+
+        /* ---------- FAQ SECTION STYLES (NEW) ---------- */
+        #faq h2 {
+            font-size: 2.2em;
+            color: var(--nav-bg);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .faq-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .faq-item {
+            background: var(--section-bg);
+            border: 1px solid var(--faq-border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-color: var(--chat-blue);
+        }
+
+        .faq-question {
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            padding: 20px;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--text-color);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .faq-icon {
+            font-size: 1.2em;
+            color: var(--nav-bg);
+            transition: transform 0.3s ease;
+            font-weight: bold;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 20px;
+            color: var(--text-color);
+            opacity: 0;
+            line-height: 1.6;
+            transition: all 0.4s ease;
+            border-top: 1px solid transparent;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 20px 20px 20px;
+            max-height: 200px; /* Adjust based on content length */
+            opacity: 1;
+            border-top-color: var(--faq-border);
+        }
+
+        /* ----------------------------------------------------
+           CHATBOT STYLES (Merged & Optimized)
+           ---------------------------------------------------- */
+        
+        .chat-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, #2F80ED, #27AE60);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 30px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(47, 128, 237, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 9999; /* High Z-Index to ensure clickability */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-btn:hover {
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: 0 8px 25px rgba(47, 128, 237, 0.6);
+        }
+
+        .chat-window {
+            display: none;
+            position: fixed;
+            bottom: 100px;
+            right: 25px;
+            width: 350px;
+            height: 550px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 9999;
+            animation: slideUp 0.3s ease-out;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #2F80ED, #27AE60);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        .close-btn:hover { opacity: 1; }
+
+        .chat-area {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .msg {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 15px;
+            font-size: 14px;
+            line-height: 1.4;
+            word-wrap: break-word;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .bot-msg {
+            background: white;
+            color: #333;
+            border-bottom-left-radius: 2px;
+            align-self: flex-start;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .user-msg {
+            background: #2F80ED;
+            color: white;
+            border-bottom-right-radius: 2px;
+            align-self: flex-end;
+        }
+
+        /* Quick Question Buttons inside Chat */
+        .q-btn {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            color: #1565c0;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 2px;
+            display: inline-block;
+        }
+        .q-btn:hover {
+            background: #1565c0;
+            color: white;
+            border-color: #1565c0;
+        }
+        .q-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .input-area {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-area input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+            transition: border-color 0.2s;
+            font-size: 14px;
+        }
+
+        .input-area input:focus {
+            border-color: #2F80ED;
+        }
+
+        .send-btn {
+            background: #2F80ED;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .send-btn:hover { background: #1a5bb8; }
+
+        /* Dark Mode Chatbot Overrides */
+        .dark-mode .chat-window { background: #2c2c2c; border-color: #444; }
+        .dark-mode .chat-area { background: #1e1e1e; }
+        .dark-mode .msg.bot-msg { background: #3d3d3d; color: #f0f0f0; }
+        .dark-mode .input-area { background: #2c2c2c; border-top-color: #444; }
+        .dark-mode .input-area input { background: #333; color: white; border-color: #555; }
+        .dark-mode .q-btn { background: #444; color: #90caf9; border-color: #555; }
+        .dark-mode .q-btn:hover { background: #1976d2; color: white; }
+
+        /* Scrollbar Styling */
+        .chat-area::-webkit-scrollbar { width: 6px; }
+        .chat-area::-webkit-scrollbar-thumb { background-color: #ccc; border-radius: 3px; }
+
+        /* ---------- FOOTER & MISC ---------- */
+        footer {
+            background: var(--header-grad);
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 50px;
+        }
+
+        #topBtn {
+            position: fixed; bottom: 30px; left: 30px;
+            background: #27AE60; color: white; border: none;
+            padding: 12px 16px; border-radius: 50%; cursor: pointer;
+            display: none; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: background 0.3s;
+            z-index: 9998;
+        }
+        #topBtn:hover { background: #219150; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            section { width: 95%; padding: 40px 5%; }
+            nav { display: flex; flex-wrap: wrap; justify-content: center; white-space: normal; }
+            nav a { margin: 5px; font-size: 0.9em; }
+            .chat-window { width: 90%; right: 5%; bottom: 100px; height: 60vh; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
+                <rect x="18" y="8" width="28" height="48" rx="5" fill="#2F80ED"/>
+                <rect x="21" y="12" width="22" height="36" rx="2" fill="#E3F2FD"/>
+                <circle cx="32" cy="50" r="2" fill="#2F80ED"/>
+                <circle cx="16" cy="32" r="4" fill="#27AE60"/>
+                <circle cx="48" cy="32" r="4" fill="#27AE60"/>
+                <circle cx="32" cy="6" r="4" fill="#27AE60"/>
+                <line x1="16" y1="32" x2="32" y2="32" stroke="#27AE60" stroke-width="2"/>
+                <line x1="48" y1="32" x2="32" y2="32" stroke="#27AE60" stroke-width="2"/>
+                <line x1="32" y1="6" x2="32" y2="18" stroke="#27AE60" stroke-width="2"/>
+            </svg>
+            Community Connect
+        </div>
+        <p>Mobile Apps Empowering Community Services</p>
+    </header>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="Research.html">Research Findings</a>
+        <a href="Awareness.html">Awareness Tips</a>
+        <a href="Survey.html">Survey</a>
+        <a href="MediaGallery.html">Media Gallery</a>
+        <a href="Interactive.html">Interactive Chatbox</a>
+        <a href="Resources.html">Resources</a>
+        <a href="Community Forum.html">Community Forum</a>
+        <a href="Contact.html" style="opacity: 0.8;">Contact</a>
+    </nav>
+
+    <div class="theme-toggle" onclick="toggleDarkMode()" title="Switch Theme">🌙</div>
+
+    <main>
+        <section id="contact">
+            <h2>Get In Touch</h2>
+            <p>Have questions about the app? Check the FAQs below or use the assistance button to chat with us.</p>
+            <button class="contact-btn">Contact Support</button>
+        </section>
+
+        <!-- NEW FAQ SECTION -->
+        <section id="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-container" id="faqContainer">
+                <!-- FAQ Items will be injected here via JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- CHATBOT WIDGET -->
+    <button class="chat-btn" onclick="toggleChat()" title="Chat with us">💬</button>
+
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <h3>🤖 Community Assistant</h3>
+            <button class="close-btn" onclick="toggleChat()">✕</button>
+        </div>
+
+        <div class="chat-area" id="chatArea">
+            <div class="msg bot-msg">
+                Hi! I can answer 10 common questions about using Mobile Apps for Community Services. Tap a question below:
+            </div>
+            <!-- 10 Questions will be injected here by JavaScript -->
+            <div class="q-container" id="quickQuestions"></div>
+        </div>
+
+        <div class="input-area">
+            <input type="text" id="userMsg" placeholder="Type a message..." onkeypress="handleEnter(event)">
+            <button class="send-btn" onclick="sendMsg()">➤</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Community Connect | Digital Community Services</p>
+    </footer>
+
+    <button id="topBtn" onclick="scrollToTop()">↑</button>
+
+    <script>
+        /* ---------- DATA: 10 QUESTIONS ON MOBILE APPS IN COMMUNITY SERVICES ---------- */
+        const qaData = [
+            { q: "1. How to report issues?", a: "Go to the 'Report' tab in the app, take a photo of the issue, and submit it. The authorities will be notified instantly." },
+            { q: "2. How to volunteer?", a: "Visit the 'Volunteer' section to view ongoing local drives. Tap 'Join' to register your participation." },
+            { q: "3. Find local events?", a: "The 'Events' calendar lists all community gatherings, clean-up campaigns, and town halls near you." },
+            { q: "4. Is there an SOS feature?", a: "Yes, the home screen features a prominent Red 'SOS' button for immediate connection to emergency services." },
+            { q: "5. How to donate?", a: "Navigate to the 'Donate' page to securely contribute funds to specific community projects via the app." },
+            { q: "6. Is my data private?", a: "We use end-to-end encryption. Your location and personal data are never shared with third parties." },
+            { q: "7. Does it work offline?", a: "Basic features like reading previously loaded events work offline, but reporting issues requires an internet connection." },
+            { q: "8. Accessibility features?", a: "The app supports screen readers, high-contrast text modes, and voice commands for users with disabilities." },
+            { q: "9. How to enable alerts?", a: "Go to 'Settings' > 'Notifications' and toggle on 'Community Alerts' to receive real-time updates." },
+            { q: "10. Is the app free?", a: "Yes, the Community Connect app is completely free for all residents to download and use." }
+        ];
+
+        /* ---------- INITIALIZATION ---------- */
+        
+        // 1. Populate Chatbot Questions
+        const qContainer = document.getElementById('quickQuestions');
+        qaData.forEach((item, index) => {
+            const btn = document.createElement('div');
+            btn.className = 'q-btn';
+            btn.textContent = item.q;
+            btn.onclick = () => askQuestion(index);
+            qContainer.appendChild(btn);
+        });
+
+        // 2. Populate Page FAQ Section (NEW)
+        const faqContainer = document.getElementById('faqContainer');
+        qaData.forEach((item, index) => {
+            // Create Wrapper
+            const faqItem = document.createElement('div');
+            faqItem.className = 'faq-item';
+
+            // Create Question Button
+            const questionBtn = document.createElement('button');
+            questionBtn.className = 'faq-question';
+            questionBtn.innerHTML = `${item.q} <span class="faq-icon">+</span>`;
+            
+            // Create Answer Div
+            const answerDiv = document.createElement('div');
+            answerDiv.className = 'faq-answer';
+            answerDiv.textContent = item.a;
+
+            // Toggle Logic
+            questionBtn.onclick = () => {
+                // Optional: Close others when one opens (Accordion behavior)
+                // document.querySelectorAll('.faq-item').forEach(i => {
+                //     if(i !== faqItem) i.classList.remove('active');
+                // });
+                
+                faqItem.classList.toggle('active');
+            };
+
+            faqItem.appendChild(questionBtn);
+            faqItem.appendChild(answerDiv);
+            faqContainer.appendChild(faqItem);
+        });
+
+        /* ---------- SCROLL REVEAL ---------- */
+        const sections = document.querySelectorAll("section");
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add("show");
+            });
+        }, { threshold: 0.2 });
+        sections.forEach(sec => observer.observe(sec));
+
+        /* ---------- DARK MODE ---------- */
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+            const btn = document.querySelector('.theme-toggle');
+            btn.textContent = document.body.classList.contains("dark-mode") ? "☀️" : "🌙";
+        }
+
+        /* ---------- BACK TO TOP ---------- */
+        const topBtn = document.getElementById("topBtn");
+        window.onscroll = () => {
+            topBtn.style.display = window.scrollY > 300 ? "block" : "none";
+        };
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        /* ---------- CHATBOT LOGIC ---------- */
+        function toggleChat() {
+            const chatWindow = document.getElementById("chatWindow");
+            const isVisible = chatWindow.style.display === "flex" || window.getComputedStyle(chatWindow).display === "flex";
+            
+            if (isVisible) {
+                chatWindow.style.display = "none";
+            } else {
+                chatWindow.style.display = "flex";
+                setTimeout(() => {
+                    const chatArea = document.getElementById("chatArea");
+                    chatArea.scrollTop = chatArea.scrollHeight;
+                }, 100);
+            }
+        }
+
+        function handleEnter(e) {
+            if (e.key === "Enter") sendMsg();
+        }
+
+        function askQuestion(index) {
+            const data = qaData[index];
+            appendMessage(data.q, "user-msg");
+            
+            setTimeout(() => {
+                appendMessage(data.a, "bot-msg");
+            }, 400);
+        }
+
+        function sendMsg() {
+            const input = document.getElementById("userMsg");
+            const msg = input.value.trim().toLowerCase();
+
+            if (msg === "") return;
+
+            appendMessage(input.value, "user-msg");
+            input.value = "";
+
+            let reply = "I can answer specific questions. Please click one of the blue question buttons above for the best info.";
+            
+            const found = qaData.find(item => 
+                item.q.toLowerCase().includes(msg) || 
+                item.a.toLowerCase().includes(msg)
+            );
+
+            if (found) {
+                reply = found.a;
+            } else if (msg.includes("hello") || msg.includes("hi")) {
+                reply = "Hello! I'm here to help with Community Service App questions.";
+            } else if (msg.includes("thank")) {
+                reply = "You're welcome!";
+            }
+
+            setTimeout(() => {
+                appendMessage(reply, "bot-msg");
+            }, 500);
+        }
+
+        function appendMessage(text, className) {
+            const chatArea = document.getElementById("chatArea");
+            const div = document.createElement("div");
+            div.className = `msg ${className}`;
+            div.textContent = text;
+            chatArea.appendChild(div);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+    </script>
+</body>
+</html>

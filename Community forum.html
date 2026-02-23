@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community Connect</title>
+
+<style>
+/* ---------- GLOBAL & VARIABLES ---------- */
+:root {
+    --primary: #2F80ED;
+    --secondary: #27AE60;
+    --accent: #FFD54F;
+    --text-dark: #333;
+    --text-light: #f5f5f5;
+    --bg-body: #f4f7fb;
+    --bg-card: #ffffff;
+    --shadow: 0 10px 25px rgba(0,0,0,0.08);
+    --transition: all 0.3s ease;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg-body);
+    color: var(--text-dark);
+    transition: background 0.3s, color 0.3s;
+    overflow-x: hidden;
+}
+
+.dark-mode {
+    --bg-body: #121212;
+    --text-dark: #f5f5f5;
+    --bg-card: #1e1e1e;
+    --shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; padding: 0; }
+
+/* ---------- HEADER ---------- */
+header {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.logo svg {
+    width: 48px;
+    height: 48px;
+    animation: pulse 2s infinite;
+}
+
+header p {
+    margin: 0;
+    font-size: 1.1em;
+    opacity: 0.9;
+}
+
+/* ---------- NAV ---------- */
+nav {
+    background: var(--primary);
+    padding: 12px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(47, 128, 237, 0.3);
+    text-align: center;
+    white-space: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+nav::-webkit-scrollbar { display: none; }
+nav { -ms-overflow-style: none; scrollbar-width: none; }
+
+nav a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95em;
+    display: inline-block;
+    position: relative;
+    padding: 5px 0;
+    transition: color 0.3s;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: var(--accent);
+    transition: width 0.3s, left 0.3s;
+}
+
+nav a:hover { color: var(--accent); }
+nav a:hover::after { width: 100%; left: 0; }
+
+/* ---------- THEME TOGGLE ---------- */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1001;
+    background: rgba(255,255,255,0.2);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: transform 0.3s;
+}
+
+.theme-toggle:hover { transform: rotate(15deg) scale(1.1); }
+
+/* ---------- SECTIONS GENERAL ---------- */
+section {
+    padding: 60px 10%;
+    margin: 30px auto;
+    background: var(--bg-card);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 1200px;
+    box-shadow: var(--shadow);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+section.show { opacity: 1; transform: translateY(0); }
+
+section h2 {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    text-align: center;
+    color: var(--primary);
+    position: relative;
+}
+
+section h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: var(--secondary);
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+.dark-mode section h2 { color: var(--secondary); }
+
+/* ---------- HOME SECTION ---------- */
+#home {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+    text-align: center;
+    border: none;
+    padding: 80px 20px;
+}
+
+#home h2 { color: white; }
+#home h2::after { background: white; }
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 15px 40px;
+    background: var(--accent);
+    color: #333;
+    font-weight: bold;
+    border-radius: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
+    font-size: 1.1em;
+}
+
+.hero-btn:hover { transform: translateY(-3px); }
+
+/* ---------- RESEARCH BLOG (EMBED SECTION) ---------- */
+#research-blog {
+    padding: 0; /* Remove padding to let iframe fill edges */
+    background: transparent;
+    box-shadow: none;
+    margin-bottom: 50px;
+}
+
+.embed-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 800px; /* Height of the embedded content */
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+}
+
+.dark-mode .embed-container {
+    background: #1e1e1e;
+    border: 1px solid #333;
+}
+
+.embed-header {
+    background: var(--primary);
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.embed-header h3 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.embed-header p {
+    margin: 5px 0 0;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+.embed-frame-wrapper {
+    flex-grow: 1;
+    position: relative;
+}
+
+.embed-frame-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
+
+/* General Button Style (for Modal) */
+.btn {
+    display: inline-block; padding: 10px 25px;
+    background: var(--secondary); color: white; border-radius: 5px;
+    font-size: 0.95em; transition: var(--transition); border: none; cursor: pointer;
+}
+.btn:hover { background: #219150; transform: translateY(-2px); }
+
+/* ---------- FOOTER ---------- */
+footer {
+    background: linear-gradient(135deg, #2c3e50, #000000);
+    color: white; text-align: center; padding: 40px 20px; margin-top: 50px;
+}
+
+/* ---------- MODAL ---------- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6); display: flex;
+    justify-content: center; align-items: center; z-index: 2000;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(4px);
+}
+.modal-overlay.active { opacity: 1; pointer-events: all; }
+.modal-box {
+    background: white; padding: 30px; border-radius: 15px;
+    width: 90%; max-width: 400px; text-align: center;
+    transform: translateY(20px); transition: transform 0.3s;
+}
+.modal-overlay.active .modal-box { transform: translateY(0); }
+.dark-mode .modal-box { background: #333; color: #f5f5f5; }
+.modal-box h3 { margin-top: 0; color: var(--primary); }
+
+/* ---------- ANIMATIONS ---------- */
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+    section { padding: 40px 5%; width: 95%; }
+    .logo { font-size: 20px; }
+    header p { font-size: 1em; }
+    .embed-container { width: 95%; height: 600px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Header -->
+<header>
+    <div class="logo">
+        <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
+            <rect x="18" y="8" width="28" height="48" rx="5" fill="#2F80ED"/>
+            <rect x="21" y="12" width="22" height="36" rx="2" fill="#E3F2FD"/>
+            <circle cx="32" cy="50" r="2" fill="#2F80ED"/>
+            <circle cx="16" cy="32" r="4" fill="#27AE60"/>
+            <circle cx="48" cy="32" r="4" fill="#27AE60"/>
+            <circle cx="32" cy="6" r="4" fill="#27AE60"/>
+            <line x1="16" y1="32" x2="32" y2="32" stroke="#27AE60" stroke-width="2"/>
+            <line x1="48" y1="32" x2="32" y2="32" stroke="#27AE60" stroke-width="2"/>
+        </svg>
+        Community Connect
+    </div>
+    <p>Mobile Apps Empowering Community Services</p>
+</header>
+
+<!-- Navigation -->
+<nav>
+   <a href="index.html">Home</a>
+    <a href="Research.html">Research Findings</a>
+    <a href="Awareness.html">Awareness Tips</a>
+    <a href="Survey.html">Survey</a>
+    <a href="MediaGallery.html">Media Gallery</a>
+    <a href="Interactive.html">Interactive Chatbox</a>
+     <a href="Resources.html">Resources</a>
+    <a href="Community Forum.html">Community Forum</a>
+     <a href="Contact.html">Contact</a>
+</nav>
+
+<!-- Theme Toggle -->
+<div class="theme-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">🌙</div>
+
+<!-- MAIN CONTENT -->
+
+<!-- Home Section -->
+<section id="home" class="show">
+    <div class="hero-content">
+        <h2>Welcome to Community Connect</h2>
+        <p>We leverage mobile technology to empower communities with instant access to healthcare, education, safety, and welfare. Join our digital movement to create a safer, more connected world.</p>
+        <!-- Updated button to point to the Research Blog since Forum is removed -->
+        <a href="#research-blog" class="hero-btn">Read Research</a>
+    </div>
+</section>
+
+<!-- Direct Embed of Blog Post -->
+<section id="research-blog" class="show">
+    <div class="embed-container">
+        <div class="embed-header">
+            <h3>Featured Research</h3>
+            <p>Direct view: Use of Mobile App in Community Services</p>
+        </div>
+        <div class="embed-frame-wrapper">
+            <iframe src="https://mahekcepcommapps.blogspot.com/2026/02/use-of-mobile-app-in-community-services.html" title="Blog Post"></iframe>
+        </div>
+        <!-- Fallback link in case embedding is blocked by security settings -->
+        <div style="padding: 10px; text-align: center; background: #f9f9f9; border-top: 1px solid #ddd;">
+            <small>If the content does not load above, <a href="https://mahekcepcommapps.blogspot.com/2026/02/use-of-mobile-app-in-community-services.html" target="_blank" style="color: var(--primary); font-weight: bold;">Click here to read the full article</a>.</small>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 Community Connect | Empowering Digital Communities</p>
+</footer>
+
+<!-- Custom Modal -->
+<div class="modal-overlay" id="infoModal">
+    <div class="modal-box">
+        <h3 id="modalTitle">Notification</h3>
+        <p id="modalMessage">Message goes here.</p>
+        <br>
+        <button class="btn" onclick="closeModal()">Close</button>
+    </div>
+</div>
+
+<script>
+/* ---------- SCROLL REVEAL ---------- */
+const observerOptions = { threshold: 0.15 };
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('show');
+    });
+}, observerOptions);
+
+document.querySelectorAll("section").forEach(section => observer.observe(section));
+
+/* ---------- SMOOTH SCROLLING ---------- */
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+    });
+});
+
+/* ---------- DARK MODE ---------- */
+function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+    const icon = document.querySelector(".theme-toggle");
+    icon.textContent = document.body.classList.contains("dark-mode") ? "☀️" : "🌙";
+}
+
+/* ---------- MODAL LOGIC ---------- */
+const modal = document.getElementById("infoModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalMsg = document.getElementById("modalMessage");
+
+function openModal(message) {
+    modalTitle.textContent = "Community Connect";
+    modalMsg.textContent = message;
+    modal.classList.add("active");
+}
+
+function closeModal() {
+    modal.classList.remove("active");
+}
+
+modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+});
+</script>
+
+</body>
+</html> 

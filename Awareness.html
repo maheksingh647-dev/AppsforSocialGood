@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community Connect - Awareness Tips</title>
+
+<style>
+/* ---------- GLOBAL ---------- */
+:root {
+    --primary-blue: #2F80ED;
+    --primary-green: #27AE60;
+    --bg-light: #f4f7fb;
+    --text-dark: #333;
+    --card-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg-light);
+    color: var(--text-dark);
+    transition: background 0.3s, color 0.3s;
+    overflow-x: hidden; /* Prevent horizontal scroll from animations */
+}
+
+.dark-mode {
+    background: #121212;
+    color: #f5f5f5;
+}
+
+.dark-mode section {
+    background: #1e1e1e;
+    color: #e0e0e0;
+}
+
+/* ---------- HEADER ---------- */
+header {
+    background: linear-gradient(135deg, #2F80ED, #27AE60);
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background decorative animation for header */
+header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 10%, transparent 10.5%);
+    background-size: 30px 30px;
+    animation: moveBackground 60s linear infinite;
+    z-index: 0;
+    pointer-events: none;
+}
+
+@keyframes moveBackground {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.header-content {
+    position: relative;
+    z-index: 1;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    font-size: 28px;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.logo svg {
+    width: 48px;
+    height: 48px;
+    animation: pulse 2s infinite;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+}
+
+header p {
+    margin-top: 15px;
+    font-size: 1.2em;
+    font-weight: 300;
+    opacity: 0.95;
+}
+
+/* ---------- NAV ---------- */
+nav {
+    background: #1E88E5;
+    padding: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95em;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+nav a:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+/* ---------- THEME LOGO ---------- */
+.theme-logo {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1100;
+    background: rgba(255,255,255,0.2);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s, background 0.3s;
+    backdrop-filter: blur(5px);
+}
+
+.theme-logo:hover {
+    transform: rotate(15deg) scale(1.1);
+    background: rgba(255,255,255,0.3);
+}
+
+/* ---------- SECTIONS ---------- */
+section {
+    padding: 60px 10%;
+    margin: 40px auto;
+    background: white;
+    border-radius: 20px;
+    width: 85%;
+    max-width: 1200px;
+    box-shadow: var(--card-shadow);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+section.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ---------- AWARENESS TIPS TABS ---------- */
+#awareness-tips {
+    background: white;
+}
+
+.tabs-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.tabs-nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 50px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Button Gradients */
+.tab-btn[data-tab="tab-dos-donts"] { background: linear-gradient(135deg, #FF9966, #FF5E62); }
+.tab-btn[data-tab="tab-guides"] { background: linear-gradient(135deg, #56CCF2, #2F80ED); }
+.tab-btn[data-tab="tab-safety"] { background: linear-gradient(135deg, #11998e, #38ef7d); }
+.tab-btn[data-tab="tab-stories"] { background: linear-gradient(135deg, #8E2DE2, #4A00E0); }
+
+.tab-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+}
+
+.tab-btn.active {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 4px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeInUp 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- TAB 1: Do's & Don'ts --- */
+.dos-donts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.box {
+    padding: 30px;
+    border-radius: 16px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+.box-dos { background: linear-gradient(135deg, #11998e, #38ef7d); }
+.box-donts { background: linear-gradient(135deg, #cb2d3e, #ef473a); }
+
+/* Decorative circle in background of boxes */
+.box::after {
+    content: '';
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    top: -50px;
+    right: -50px;
+}
+
+.box h3 { margin-top: 0; display: flex; align-items: center; gap: 10px; font-size: 1.5em; }
+.box ul { padding-left: 20px; margin-top: 20px; }
+.box li { margin-bottom: 15px; line-height: 1.6; font-size: 1.05em; }
+.box li strong { text-decoration: underline; text-decoration-color: rgba(255,255,255,0.6); }
+
+/* --- TAB 2: Step-by-Step Guides --- */
+.guides-layout {
+    display: flex;
+    flex-direction: column; /* Stack vertically */
+    align-items: center; /* Center content horizontally */
+    gap: 40px;
+}
+
+.step-list { 
+    list-style: none; 
+    padding: 0; 
+    width: 100%;
+    max-width: 800px; /* Constrain width for readability */
+}
+
+.guide-image-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Ensures the image is perfectly centered */
+    margin-top: 10px;
+    padding-bottom: 20px;
+}
+
+/* Animation for the image wrapper to make it float slightly */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.guide-image-wrapper img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(47, 128, 237, 0.25);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    animation: float 6s ease-in-out infinite;
+    display: block; /* Removes inline-block spacing issues */
+}
+
+.guide-image-wrapper:hover img {
+    transform: scale(1.02);
+    box-shadow: 0 20px 45px rgba(47, 128, 237, 0.35);
+}
+
+.step-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+    border-left: 5px solid var(--primary-blue);
+    position: relative;
+    overflow: hidden;
+}
+
+.dark-mode .step-item {
+    background: #2c2c2c;
+    border-left-color: #56CCF2;
+}
+
+.step-item:hover { 
+    transform: translateX(10px); 
+    background: #e3f2fd; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.dark-mode .step-item:hover { background: #383838; }
+
+.step-number {
+    background: var(--primary-blue);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    font-weight: bold;
+    flex-shrink: 0;
+    font-size: 1.1em;
+    box-shadow: 0 4px 10px rgba(47, 128, 237, 0.3);
+}
+
+/* --- TAB 3: Safety Practices --- */
+.safety-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.safety-card {
+    background: #fff8e1;
+    border: 2px solid #ffca28;
+    padding: 30px 20px;
+    border-radius: 16px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.dark-mode .safety-card {
+    background: #2d2d2d;
+    border-color: #fbc02d;
+    color: #fff;
+}
+
+.safety-card:hover { 
+    transform: translateY(-10px); 
+    background: #ffe082; 
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+.dark-mode .safety-card:hover { background: #424242; }
+
+.safety-icon { font-size: 48px; margin-bottom: 15px; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+.safety-card h4 { margin: 0 0 12px 0; color: #f57f17; font-size: 1.2em; }
+.dark-mode .safety-card h4 { color: #ffeb3b; }
+
+/* --- TAB 4: Real-life Stories --- */
+.story-card {
+    background: white;
+    border-left: 6px solid #8E2DE2;
+    padding: 30px;
+    border-radius: 0 16px 16px 0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+    transition: transform 0.3s;
+}
+.dark-mode .story-card { background: #2c2c2c; }
+
+.story-card:hover { transform: scale(1.01); }
+
+.story-quote {
+    font-style: italic;
+    color: #555;
+    font-size: 1.15em;
+    line-height: 1.7;
+    position: relative;
+}
+.dark-mode .story-quote { color: #ccc; }
+
+.story-quote::before {
+    content: '“';
+    font-size: 4em;
+    position: absolute;
+    top: -20px;
+    left: -15px;
+    color: rgba(142, 45, 226, 0.1);
+    font-family: serif;
+}
+
+.story-author {
+    margin-top: 20px;
+    font-weight: bold;
+    color: #8E2DE2;
+    text-align: right;
+    font-size: 1.1em;
+    display: block;
+}
+
+/* ---------- BACK TO TOP ---------- */
+#topBtn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    z-index: 900;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: transform 0.3s, background 0.3s;
+    font-size: 20px;
+}
+
+#topBtn:hover {
+    background: var(--primary-green);
+    transform: translateY(-5px);
+}
+
+/* ---------- ANIMATIONS ---------- */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.animated-container {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: 1s ease;
+}
+
+section.show .animated-container {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+    .dos-donts-grid { grid-template-columns: 1fr; }
+    .tabs-nav { flex-direction: column; width: 100%; }
+    .tab-btn { width: 100%; justify-content: center; }
+    section { width: 95%; padding: 40px 5%; }
+    .step-list { max-width: 100%; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-content">
+        <div class="logo">
+            <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
+                <rect x="18" y="8" width="28" height="48" rx="5" fill="#2F80ED"/>
+                <rect x="21" y="12" width="22" height="36" rx="2" fill="#E3F2FD"/>
+                <circle cx="32" cy="50" r="2" fill="#2F80ED"/>
+                <circle cx="16" cy="32" r="4" fill="#27AE60"/>
+                <circle cx="48" cy="32" r="4" fill="#27AE60"/>
+                <circle cx="32" cy="6" r="4" fill="#27AE60"/>
+                <line x1="16" y1="32" x2="32" y2="32" stroke="#27AE60" stroke-width="2"/>
+                <line x1="48" y1="32" x2="32" y2="32" stroke="#27AE60" stroke-width="2"/>
+                <line x1="32" y1="6" x2="32" y2="18" stroke="#27AE60" stroke-width="2"/>
+            </svg>
+            Community Connect
+        </div>
+        <p>Mobile Apps Empowering Community Services</p>
+    </div>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="Research.html">Research Findings</a>
+    <a href="Awareness.html">Awareness Tips</a>
+    <a href="Survey.html">Survey</a>
+    <a href="MediaGallery.html">Media Gallery</a>
+    <a href="Interactive.html">Interactive Chatbox</a>
+    <a href="Resources.html">Resources</a>
+    <a href="Community Forum.html">Community Forum</a>
+    <a href="Contact.html">Contact</a>
+</nav>
+
+<div class="theme-logo" onclick="toggleDarkMode()" title="Switch Theme">🌙</div>
+
+<!-- AWARENESS TIPS SECTION (TABS) -->
+<section id="awareness-tips">
+    <div class="tabs-container animated-container">
+        <h2 style="text-align: center; color: #333; margin-bottom: 40px; font-size: 2.5em;">Awareness Tips</h2>
+        
+        <div class="tabs-nav">
+            <button class="tab-btn active" onclick="openTab(event, 'tab-dos-donts')" data-tab="tab-dos-donts">
+                🚫 Do's & Don'ts
+            </button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-guides')" data-tab="tab-guides">
+                📘 Step-by-Step Guides
+            </button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-safety')" data-tab="tab-safety">
+                🛡️ Safety Practices
+            </button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-stories')" data-tab="tab-stories">
+                📖 Real-life Stories
+            </button>
+        </div>
+
+        <!-- TAB 1: DO'S & DON'TS -->
+        <div id="tab-dos-donts" class="tab-content active">
+            <div class="dos-donts-grid">
+                <div class="box box-dos">
+                    <h3>✅ Do's</h3>
+                    <ul>
+                        <li><strong>Keep GPS On:</strong> Enable location services for accurate reporting and emergency response.</li>
+                        <li><strong>Verify Sources:</strong> Only trust information from official community health channels within the app.</li>
+                        <li><strong>Report Honestly:</strong> Use the "Report Issue" feature for genuine community problems.</li>
+                        <li><strong>Participate:</strong> Join digital drives and volunteer opportunities listed in the app.</li>
+                    </ul>
+                </div>
+                <div class="box box-donts">
+                    <h3>❌ Don'ts</h3>
+                    <ul>
+                        <li><strong>Don't Share Private Info:</strong> Never share passwords or OTPs with anyone via the app.</li>
+                        <li><strong>Don't Spam:</strong> Avoid fake reports or unnecessary SOS alerts.</li>
+                        <li><strong>Don't Ignore Alerts:</strong> Take community health and weather alerts seriously.</li>
+                        <li><strong>Don't Install Unverified Apps:</strong> Stick to the official "Community Connect" app.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: STEP-BY-STEP GUIDES -->
+        <div id="tab-guides" class="tab-content">
+            <h3 style="color: #2F80ED; text-align: center; margin-bottom: 40px; font-size: 1.8em;">How to Report a Community Issue</h3>
+            
+            <div class="guides-layout">
+                <!-- Text Steps (Top) -->
+                <ul class="step-list">
+                    <li class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-text">
+                            <strong>Open the Service App & Tap "Report"</strong><br>
+                            Find the red or prominent "Report Issue" icon on the home dashboard.
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-text">
+                            <strong>Take a Photo</strong><br>
+                            Use your camera to take a clear picture of the issue (pothole, garbage, hazard).
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-text">
+                            <strong>Select Category & Location</strong><br>
+                            Choose if it's "Sanitation," "Roads," or "Health." Confirm your GPS location.
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-text">
+                            <strong>Submit & Track</strong><br>
+                            Tap send. You will receive a tracking ID to monitor the resolution status.
+                        </div>
+                    </li>
+                </ul>
+
+                <!-- Image (Bottom, Centered, Caption Removed) -->
+                <div class="guide-image-wrapper">
+                    <img src="https://z-cdn-media.chatglm.cn/files/2938b6bf-381d-4eff-a881-b0e35f738242.png?auth_key=1871392926-637ff02971ea45ab8ecc5bc768b3399e-0-c4de171addc33d2f6946cddc3f61f74b" alt="Step - by - Step Guide on use of community apps">
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: SAFETY PRACTICES -->
+        <div id="tab-safety" class="tab-content">
+            <h3 style="color: #27AE60; text-align: center; margin-bottom: 30px;">Stay Safe While Using the App</h3>
+            <div class="safety-grid">
+                <div class="safety-card">
+                    <span class="safety-icon">🔒</span>
+                    <h4>Strong Passwords</h4>
+                    <p>Use a mix of letters, numbers, and symbols for your app account to prevent unauthorized access.</p>
+                </div>
+                <div class="safety-card">
+                    <span class="safety-icon">📡</span>
+                    <h4>Secure Wi-Fi</h4>
+                    <p>Avoid logging in or reporting sensitive data on public/open Wi-Fi networks.</p>
+                </div>
+                <div class="safety-card">
+                    <span class="safety-icon">🆘</span>
+                    <h4>SOS Usage</h4>
+                    <p>Teach children and elderly family members how to use the "One-Tap SOS" button correctly in emergencies.</p>
+                </div>
+                <div class="safety-card">
+                    <span class="safety-icon">🔄</span>
+                    <h4>Regular Updates</h4>
+                    <p>Keep the app updated to ensure you have the latest security patches and features.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: REAL-LIFE STORIES -->
+        <div id="tab-stories" class="tab-content">
+            <div class="story-card">
+                <p class="story-quote">"My mother fell ill late at night. I didn't know the nearest clinic. I opened the Community Connect app, tapped 'Healthcare', and it directed me to a 24/7 clinic just 5 minutes away. The app literally saved her life."</p>
+                <span class="story-author">- Rahul K., Resident</span>
+            </div>
+            <div class="story-card" style="border-left-color: #e17055;">
+                <p class="story-quote">"We reported a garbage pile-up near our school using the app. Within 24 hours, the municipal truck arrived to clear it. It feels empowering to see our voice being heard instantly."</p>
+                <span class="story-author" style="color: #e17055;">- Priya M., Teacher</span>
+            </div>
+            <div class="story-card" style="border-left-color: #2980b9;">
+                <p class="story-quote">"The real-time flood alerts helped our community evacuate before the waters rose. The coordination through the app was seamless and saved many properties."</p>
+                <span class="story-author" style="color: #2980b9;">- Suresh R., Community Leader</span>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<footer style="text-align: center; padding: 20px; color: #777; background: #fff; margin-top: 20px;">
+    <p>© 2026 Community Connect | Digital Community Services</p>
+</footer>
+
+<button id="topBtn" onclick="scrollToTop()" aria-label="Back to Top">↑</button>
+
+<script>
+/* ---------- SCROLL REVEAL ---------- */
+const sections = document.querySelectorAll("section");
+window.addEventListener("scroll", () => {
+    sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        if (top < window.innerHeight - 100) {
+            sec.classList.add("show");
+        }
+    });
+});
+
+/* Trigger once on load in case user is already scrolled */
+window.dispatchEvent(new Event('scroll'));
+
+/* ---------- DARK MODE ---------- */
+function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+}
+
+/* ---------- BACK TO TOP ---------- */
+const topBtn = document.getElementById("topBtn");
+window.onscroll = () => {
+    topBtn.style.display = window.scrollY > 300 ? "flex" : "none";
+    topBtn.style.alignItems = "center";
+    topBtn.style.justifyContent = "center";
+};
+
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* ---------- TAB FUNCTIONALITY ---------- */
+function openTab(evt, tabName) {
+    // 1. Hide all tab content
+    const tabContents = document.getElementsByClassName("tab-content");
+    for (let i = 0; i < tabContents.length; i++) {
+        tabContents[i].style.display = "none";
+        tabContents[i].classList.remove("active");
+    }
+
+    // 2. Remove 'active' class from all buttons
+    const tabLinks = document.getElementsByClassName("tab-btn");
+    for (let i = 0; i < tabLinks.length; i++) {
+        tabLinks[i].className = tabLinks[i].className.replace(" active", "");
+    }
+
+    // 3. Show the current tab and add 'active' class to the button
+    // Using a slight timeout to allow display:block to apply before opacity transition
+    const activeTab = document.getElementById(tabName);
+    activeTab.style.display = "block";
+    
+    // Force reflow to restart animation
+    void activeTab.offsetWidth; 
+    
+    activeTab.classList.add("active");
+    
+    evt.currentTarget.className += " active";
+}
+</script>
+
+</body>
+</html>

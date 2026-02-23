@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Width Google Form & Survey</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9; /* Light background for better contrast */
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #fff;
+            margin-top: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Container for the Google Form */
+        .form-container {
+            width: 100%;
+            max-width: 800px; /* Prevents it from getting too wide on huge screens */
+            margin: 0 auto;   /* Centers the container */
+            background: #fff;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        /* Iframe styling */
+        iframe {
+            width: 100%;
+            height: 800px;   /* Fixed height instead of 100vh so the survey below is visible */
+            border: none;
+            display: block;
+        }
+
+        /* Survey Section Styling */
+        .survey-section {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        .question-item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .question-text {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        /* Button Styling */
+        button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Summary Button styling */
+        #summary-btn {
+            background-color: #28a745;
+            width: 100%;
+            font-size: 16px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        #summary-btn:hover {
+            background-color: #218838;
+        }
+
+        .result-text {
+            margin-top: 5px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        #summary {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Student Admission Form</h2>
+
+    <div class="form-container">
+        <!-- Added embedded=true to URL for better rendering -->
+        <iframe title="google form"
+            src="https://docs.google.com/forms/d/e/1FAIpQLScyeuczllaXhio7YDHKgw7GLt5OPd3-u682sBISLwE_NU-x2g/viewform?embedded=true">
+        </iframe>
+    </div>
+
+    <h2>📊 Online Community Survey</h2>
+    
+    <div class="survey-section">
+        <div id="survey"></div>
+        
+        <button id="summary-btn" onclick="showSummary()">Show Final Summary</button>
+        <div id="summary"></div>
+    </div>
+        
+    <script>
+  // Questions related to mobile apps in community services
+  const questions = [
+    "Do you use mobile apps for local government services?",
+    "Are apps effective for reporting community issues?",
+    "Do you prefer booking appointments via apps?",
+    "Are community service apps easy to use for seniors?",
+    "Do you trust the security of local government apps?",
+    "Should community events be organized through apps?",
+    "Do you use apps to find local volunteer opportunities?",
+    "Are mobile apps helpful for emergency alerts?",
+    "Is digital access through apps inclusive for everyone?",
+    "Should more community services move to mobile apps?"
+  ];
+
+  // Store votes
+  let votes = [];
+
+  // Initialize votes array
+  for (let i = 0; i < questions.length; i++) {
+    votes[i] = { yes: 0, no: 0 };
+  }
+
+  // Display questions
+  const surveyDiv = document.getElementById("survey");
+
+  for (let i = 0; i < questions.length; i++) {
+    // Create elements using template literals for cleaner HTML
+    let questionHTML = `
+      <div class="question-item">
+        <span class="question-text">Q${i + 1}. ${questions[i]}</span>
+        <button onclick="vote(${i}, 'yes')">Yes</button>
+        <button onclick="vote(${i}, 'no')">No</button>
+        <div class="result-text" id='result${i}'>Yes: 0 | No: 0</div>
+      </div>
+    `;
+    surveyDiv.innerHTML += questionHTML;
+  }
+
+  // Vote function
+  function vote(q, choice) {
+    if (choice === "yes") votes[q].yes++;
+    if (choice === "no") votes[q].no++;
+
+    document.getElementById("result" + q).innerHTML =
+      `Yes: ${votes[q].yes} | No: ${votes[q].no}`;
+  }
+
+  // Summary function
+  function showSummary() {
+    let totalYes = 0;
+    let totalNo = 0;
+    let text = "";
+
+    for (let i = 0; i < votes.length; i++) {
+      totalYes += votes[i].yes;
+      totalNo += votes[i].no;
+    }
+
+    text += `<p><strong>Total Yes:</strong> ${totalYes}</p>`;
+    text += `<p><strong>Total No:</strong> ${totalNo}</p>`;
+
+    document.getElementById("summary").innerHTML = text;
+  }
+</script>       
+</body>
+</html>

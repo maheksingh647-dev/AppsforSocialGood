@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community Connect</title>
+
+<style>
+/* ---------- GLOBAL ---------- */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f7fb;
+    color: #333;
+    transition: background 0.3s, color 0.3s;
+}
+
+.dark-mode {
+    background: #121212;
+    color: #f5f5f5;
+}
+
+/* ---------- HEADER ---------- */
+header {
+    background: linear-gradient(135deg, #2F80ED, #27AE60);
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.logo svg {
+    width: 45px;
+    animation: pulse 2s infinite;
+}
+
+header p {
+    margin-top: 10px;
+    font-size: 1.2em;
+}
+
+/* ---------- NAV ---------- */
+nav {
+    background: #1E88E5;
+    padding: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1em;
+    display: inline-block;
+}
+
+nav button {
+    background: #FFD54F;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* ---------- THEME LOGO ---------- */
+.theme-logo {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 2000;
+    background: rgba(255,255,255,0.2);
+    padding: 10px;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+}
+
+.theme-logo:hover {
+    background: rgba(255,255,255,0.4);
+}
+
+/* ---------- SECTIONS ---------- */
+section {
+    padding: 50px 10%;
+    margin: 30px auto;
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: 0.6s ease;
+}
+
+section.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dark-mode section {
+    background: #1e1e1e;
+}
+
+/* ---------- HOME INTRO ---------- */
+#home {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #fff;
+    padding: 50px 20px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.intro-container {
+    max-width: 900px;
+    width: 90%;
+    padding: 40px;
+    background: rgba(0,0,0,0.4);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    animation: fadeInUp 2s ease forwards;
+    opacity: 0;
+    margin: 0 auto;
+}
+#home h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    position: relative;
+    display: inline-block;
+}
+
+#home h2::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 3px;
+    left: 0;
+    bottom: -5px;
+    background: #ffea00;
+    transition: width 0.5s ease;
+}
+
+#home h2:hover::after {
+    width: 100%;
+}
+
+/* ---------- OBJECTIVES BACKGROUND ---------- */
+#objectives {
+    background-image: url('https://www.bluestarindia.com/media/343685/banner-v4_320-x-306-1.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white; 
+}
+/* ---------- OBJECTIVES TITLE ---------- */
+#objectives h2 {
+    font-weight: bold;      
+    font-size: 3em;         
+    text-align: center;     
+    margin-bottom: 30px; 
+     color: #005180; 
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+}
+
+#objectives .cards .card {
+    background: rgba(51, 51, 51, 0.85); 
+    color: #fff;
+    backdrop-filter: blur(5px);
+}
+
+#objectives .card:hover {
+    background: rgba(51, 51, 51, 0.95);
+}
+
+#home p {
+    font-size: 1.2em;
+    line-height: 1.6;
+    animation: textFade 3s ease-in-out infinite alternate;
+}
+
+/* ---------- CARDS ---------- */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: linear-gradient(135deg, #E3F2FD, #E8F5E9);
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+    font-size: 1.1em;
+}
+
+.dark-mode .card {
+    background: #2c2c2c;
+    color: #e0e0e0;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+}
+
+/* ---------- COUNTERS ---------- */
+.stats {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    flex-wrap: wrap;
+}
+
+.stat h3 {
+    font-size: 32px;
+    color: #2F80ED;
+    margin: 0;
+}
+
+.dark-mode .stat h3 {
+    color: #64b5f6;
+}
+
+/* ---------- AWARENESS CARDS ---------- */
+.awareness-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.awareness-card {
+    background: #f4f4f4;
+    border-radius: 10px;
+    padding: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+}
+
+.dark-mode .awareness-card {
+    background: #2c2c2c;
+}
+
+.awareness-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+}
+
+.awareness-card .icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+/* ---------- RESOURCES SECTION (NEW & ATTRACTIVE) ---------- */
+.resources-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.resource-column {
+    background: #f9fbfd;
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid #eef2f5;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+}
+
+.dark-mode .resource-column {
+    background: #252525;
+    border-color: #333;
+}
+
+.resource-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e1e4e8;
+}
+
+.dark-mode .resource-header {
+    border-color: #444;
+}
+
+.resource-header h3 {
+    margin: 0;
+    font-size: 1.4em;
+    color: #2F80ED;
+}
+
+.dark-mode .resource-header h3 {
+    color: #64b5f6;
+}
+
+.resource-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #444;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.dark-mode .resource-link {
+    background: #333;
+    color: #ddd;
+    box-shadow: none;
+}
+
+/* Specific borders for categories */
+.gov-link:hover { border-left-color: #1E88E5; background: #E3F2FD; }
+.help-link:hover { border-left-color: #E53935; background: #FFEBEE; }
+.learn-link:hover { border-left-color: #43A047; background: #E8F5E9; }
+
+.dark-mode .gov-link:hover { background: #1565C0; color: white; }
+.dark-mode .help-link:hover { background: #c62828; color: white; }
+.dark-mode .learn-link:hover { background: #2e7d32; color: white; }
+
+.resource-link:hover {
+    transform: translateX(5px);
+}
+
+.link-icon {
+    font-size: 1.2em;
+    margin-right: 10px;
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+    background: linear-gradient(135deg, #2F80ED, #27AE60);
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+/* ---------- BACK TO TOP ---------- */
+#topBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #2F80ED;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    z-index: 1000;
+}
+
+/* ---------- ANIMATIONS ---------- */
+@keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(50px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes textFade {
+    0% {opacity: 0.7;}
+    50% {opacity: 1;}
+    100% {opacity: 0.7;}
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+    #home h2 { font-size: 2em; }
+    #home p { font-size: 1em; }
+    nav a { margin: 5px; font-size: 0.9em; }
+}
+
+.animated-container {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: 0.8s ease;
+}
+
+section.show .animated-container {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.about-content {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.about-img {
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.4s, box-shadow 0.4s;
+}
+
+.about-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+}
+
+@media (max-width: 768px) {
+    .about-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    .about-img { margin-bottom: 20px; }
+}
+
+#about h2 {
+    text-align: center;
+    font-size: 2.5em;
+    position: relative;
+    display: inline-block;
+    color: #2F80ED;
+}
+.dark-mode #about h2 { color: #64b5f6; }
+
+#about h2::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 3px;
+    left: 0;
+    bottom: -5px;
+    background: #FFD700;
+    transition: width 0.5s ease;
+}
+
+#about h2:hover::after { width: 100%; }
+
+#about p {
+    font-size: 1.2em;
+    line-height: 1.6;
+    color: #333;
+}
+.dark-mode #about p { color: #e0e0e0; }
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
+            <rect x="18" y="8" width="28" height="48" rx="5" fill="#2F80ED"/>
+            <rect x="21" y="12" width="22" height="36" rx="2" fill="#E3F2FD"/>
+            <circle cx="32" cy="50" r="2" fill="#2F80ED"/>
+            <circle cx="16" cy="32" r="4" fill="#27AE60"/>
+            <circle cx="48" cy="32" r="4" fill="#27AE60"/>
+            <circle cx="32" cy="6" r="4" fill="#27AE60"/>
+            <line x1="16" y1="32" x2="32" y2="32" stroke="#27AE60" stroke-width="2"/>
+            <line x1="48" y1="32" x2="32" y2="32" stroke="#27AE60" stroke-width="2"/>
+            <line x1="32" y1="6" x2="32" y2="18" stroke="#27AE60" stroke-width="2"/>
+        </svg>
+        Community Connect
+    </div>
+    <p>Mobile Apps Empowering Community Services</p>
+</header>
+
+<nav>
+   <a href="index.html">Home</a>
+    <a href="Research.html">Research Findings</a>
+    <a href="Awareness.html">Awareness Tips</a>
+    <a href="Survey.html">Survey</a>
+    <a href="MediaGallery.html">Media Gallery</a>
+    <a href="Interactive.html">Interactive Chatbox</a>
+     <a href="Resources.html">Resources</a>
+    <a href="Community Forum.html">Community Forum</a>
+     <a href="Contact.html">Contact</a>
+</nav>
+
+<div class="theme-logo" onclick="toggleDarkMode()" title="Switch Theme">🌙</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- NEW RESOURCES SECTION -->
+<section id="resources">
+    <h2>Resources & Essential Links</h2>
+    <p style="text-align: center; margin-bottom: 30px; color: #666;">Quick access to government services, emergency contacts, and educational materials.</p>
+    
+    <div class="resources-wrapper">
+        
+        <!-- GOVERNMENT PORTALS -->
+        <div class="resource-column">
+            <div class="resource-header">
+                <span style="font-size: 1.5em;">🏛️</span>
+                <h3>Government Portals</h3>
+            </div>
+            
+            <a href="https://www.india.gov.in" target="_blank" class="resource-link gov-link">
+                <span><span class="link-icon">🇮🇳</span> National Portal of India</span>
+                <span>↗</span>
+            </a>
+            <a href="https://www.digitalindia.gov.in" target="_blank" class="resource-link gov-link">
+                <span><span class="link-icon">💻</span> Digital India</span>
+                <span>↗</span>
+            </a>
+            <a href="https://www.mygov.in" target="_blank" class="resource-link gov-link">
+                <span><span class="link-icon">🗳️</span> MyGov (Citizen Engagement)</span>
+                <span>↗</span>
+            </a>
+            <a href="https://uidai.gov.in" target="_blank" class="resource-link gov-link">
+                <span><span class="link-icon">🆔</span> UIDAI (Aadhaar)</span>
+                <span>↗</span>
+            </a>
+        </div>
+
+        <!-- EMERGENCY HELPLINES -->
+        <div class="resource-column">
+            <div class="resource-header">
+                <span style="font-size: 1.5em;">🚨</span>
+                <h3>Emergency Helplines</h3>
+            </div>
+            
+            <a href="tel:112" class="resource-link help-link">
+                <span><span class="link-icon">📞</span> All Emergency (112)</span>
+                <span>Call</span>
+            </a>
+            <a href="tel:100" class="resource-link help-link">
+                <span><span class="link-icon">👮</span> Police (100)</span>
+                <span>Call</span>
+            </a>
+            <a href="tel:101" class="resource-link help-link">
+                <span><span class="link-icon">🔥</span> Fire (101)</span>
+                <span>Call</span>
+            </a>
+            <a href="tel:108" class="resource-link help-link">
+                <span><span class="link-icon">🚑</span> Ambulance (108)</span>
+                <span>Call</span>
+            </a>
+            <a href="tel:1091" class="resource-link help-link">
+                <span><span class="link-icon">👩</span> Women Helpline (1091)</span>
+                <span>Call</span>
+            </a>
+        </div>
+
+        <!-- LEARNING RESOURCES -->
+        <div class="resource-column">
+            <div class="resource-header">
+                <span style="font-size: 1.5em;">🎓</span>
+                <h3>Learning Resources</h3>
+            </div>
+            
+            <a href="https://swayam.gov.in" target="_blank" class="resource-link learn-link">
+                <span><span class="link-icon">📚</span> SWAYAM (MOOCs)</span>
+                <span>↗</span>
+            </a>
+            <a href="https://nptel.ac.in" target="_blank" class="resource-link learn-link">
+                <span><span class="link-icon">🎥</span> NPTEL</span>
+                <span>↗</span>
+            </a>
+            <a href="https://diksha.gov.in" target="_blank" class="resource-link learn-link">
+                <span><span class="link-icon">🏫</span> DIKSHA (School Education)</span>
+                <span>↗</span>
+            </a>
+            <a href="https://www.nios.ac.in" target="_blank" class="resource-link learn-link">
+                <span><span class="link-icon">📝</span> NIOS (Open Schooling)</span>
+                <span>↗</span>
+            </a>
+        </div>
+        
+    </div>
+</section>
+
+
+
+<footer>
+    <p>© 2026 Community Connect | Digital Community Services</p>
+</footer>
+
+<button id="topBtn" onclick="scrollToTop()">↑</button>
+
+<script>
+/* ---------- SCROLL REVEAL ---------- */
+const sections = document.querySelectorAll("section");
+window.addEventListener("scroll", () => {
+    sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        if (top < window.innerHeight - 100) {
+            sec.classList.add("show");
+        }
+    });
+});
+window.addEventListener("load", () => {
+    sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        if (top < window.innerHeight) sec.classList.add("show");
+    });
+});
+
+/* ---------- COUNTER ANIMATION ---------- */
+const counters = document.querySelectorAll("[data-count]");
+const animateCounters = () => {
+    counters.forEach(counter => {
+        const rect = counter.getBoundingClientRect();
+        if(rect.top < window.innerHeight && !counter.classList.contains('counted')) {
+            counter.classList.add('counted');
+            let start = 0;
+            const end = parseInt(counter.dataset.count);
+            const speed = 50;
+            const updateCounter = () => {
+                start += Math.ceil(end / speed);
+                if (start < end) {
+                    counter.textContent = start;
+                    setTimeout(updateCounter, 40);
+                } else {
+                    counter.textContent = end;
+                }
+            };
+            updateCounter();
+        }
+    });
+};
+window.addEventListener("scroll", animateCounters);
+
+/* ---------- DARK MODE ---------- */
+function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+}
+
+/* ---------- BACK TO TOP ---------- */
+const topBtn = document.getElementById("topBtn");
+window.onscroll = () => {
+    topBtn.style.display = window.scrollY > 300 ? "block" : "none";
+};
+
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+</script>
+
+</body>
+</html>

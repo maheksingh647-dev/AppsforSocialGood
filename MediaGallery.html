@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Connect - Media Gallery</title>
+
+    <style>
+        /* ---------- GLOBAL VARIABLES ---------- */
+        :root {
+            --primary-bg: #f4f7fb;
+            --text-color: #333;
+            --section-bg: #ffffff;
+            --nav-bg: #1E88E5;
+            --header-grad: linear-gradient(135deg, #2F80ED, #27AE60);
+            --chat-blue: #2F80ED;
+            --chat-green: #27AE60;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-color);
+            transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            --primary-bg: #121212;
+            --text-color: #e0e0e0;
+            --section-bg: #1e1e1e;
+            --nav-bg: #0d47a1;
+        }
+
+        /* ---------- HEADER ---------- */
+        header {
+            background: var(--header-grad);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .logo svg {
+            width: 45px;
+            animation: pulse 2s infinite;
+        }
+
+        header p { margin-top: 10px; font-size: 1.2em; opacity: 0.9; }
+
+        /* ---------- NAV ---------- */
+        nav {
+            background: var(--nav-bg);
+            padding: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            white-space: nowrap;
+            overflow-x: auto;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* ---------- THEME TOGGLE ---------- */
+        .theme-toggle {
+            position: fixed;
+            top: 20px; right: 20px;
+            font-size: 24px; cursor: pointer;
+            background: rgba(255,255,255,0.2);
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1100;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+        }
+        .theme-toggle:hover { background: rgba(255,255,255,0.4); transform: rotate(15deg); }
+
+        /* ---------- SECTIONS ---------- */
+        section {
+            padding: 60px 5%;
+            margin: 40px auto;
+            background: var(--section-bg);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 1200px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 0.8s ease;
+        }
+        section.show { opacity: 1; transform: translateY(0); }
+
+        section h2 {
+            text-align: center;
+            color: var(--nav-bg);
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+
+        /* ---------- SLIDER / CAROUSEL STYLES ---------- */
+        .gallery-category {
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .gallery-category h3 {
+            font-size: 1.5em;
+            color: var(--text-color);
+            border-left: 5px solid #2F80ED;
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* The visible window */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            padding: 10px 0; /* Space for shadows */
+        }
+
+        /* The moving track */
+        .slider-track {
+            display: flex;
+            gap: 25px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 10px 5px;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE */
+            scroll-snap-type: x mandatory;
+            align-items: flex-start; /* Align top by default */
+        }
+
+        .slider-track::-webkit-scrollbar { display: none; }
+
+        .media-card {
+            flex: 0 0 auto;
+            width: 300px; 
+            background: rgba(255,255,255,0.6);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            scroll-snap-align: start;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        /* SPECIFIC WIDTH FOR POSTERS (EXPANDED) */
+        #posters .media-card {
+            width: 380px; 
+        }
+        
+        body.dark-mode .media-card { background: #2c2c2c; border: 1px solid #333; }
+        .media-card:hover { transform: translateY(-8px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+
+        .media-img-wrapper {
+            width: 100%;
+            height: 200px; /* Default Height */
+            overflow: hidden;
+            background: #000;
+        }
+        
+        .media-img-wrapper img, .media-img-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Standard behavior for Infographics/Videos */
+            transition: transform 0.5s ease;
+        }
+        
+        .media-card:hover .media-img-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .media-caption {
+            padding: 15px;
+            text-align: center;
+        }
+        .media-caption h4 { margin: 0 0 8px 0; color: var(--nav-bg); font-size: 1.1em; }
+        .media-caption p { margin: 0; font-size: 0.9em; color: var(--text-color); opacity: 0.8; line-height: 1.4; }
+
+        /* Video Wrapper aspect ratio fix inside flex */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            width: 100%;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0; left: 0;
+            border: 0;
+        }
+
+        /* ---------- POSTER SPECIFIC ADJUSTMENTS ---------- */
+        
+        /* 1. Override Track alignment for posters to handle variable heights gracefully */
+        #posters .slider-track {
+            align-items: center; /* Center posters vertically in the track */
+        }
+
+        /* 2. Override Wrapper: Remove fixed height, allow auto */
+        #posters .media-img-wrapper {
+            height: auto !important; /* Remove fixed height constraint */
+            min-height: 300px; /* Keep a minimum height for structure */
+            background: transparent; /* Cleaner background for full image */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        /* 3. Override Image: Responsive fitting */
+        #posters .media-img-wrapper img {
+            height: auto !important; /* Height determined by aspect ratio */
+            object-fit: contain !important; /* Show ENTIRE image, no cropping */
+            max-height: 70vh; /* Don't let it get taller than 70% of screen height */
+            transform: none !important; /* Disable hover scale for posters to keep them clean */
+        }
+
+        /* Slider Buttons */
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            color: var(--nav-bg);
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .slider-btn:hover { background: var(--nav-bg); color: white; transform: translateY(-50%) scale(1.1); }
+        .slider-btn.left { left: -10px; }
+        .slider-btn.right { right: -10px; }
+
+        @media(max-width: 1100px) {
+            .slider-btn.left { left: 0; }
+            .slider-btn.right { right: 0; }
+        }
+
+        /* ---------- FOOTER ---------- */
+        footer {
+            background: var(--header-grad);
+            color: white; text-align: center; padding: 30px; margin-top: 50px;
+        }
+        #topBtn { position: fixed; bottom: 30px; left: 30px; background: #27AE60; color: white; border: none; padding: 12px; border-radius: 50%; cursor: pointer; display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: background 0.3s; z-index: 990; }
+        #topBtn:hover { background: #219150; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            section { width: 95%; padding: 40px 15px; }
+            .media-card { width: 260px; } 
+            #posters .media-card { width: 290px; } 
+            /* On mobile, let posters fill the screen width a bit more comfortably if needed, 
+               but keeping card width ensures layout consistency */
+            nav { justify-content: flex-start; }
+        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
+                <rect x="18" y="8" width="28" height="48" rx="5" fill="#2F80ED"/>
+                <rect x="21" y="12" width="22" height="36" rx="2" fill="#E3F2FD"/>
+                <circle cx="32" cy="50" r="2" fill="#2F80ED"/>
+                <circle cx="16" cy="32" r="4" fill="#27AE60"/>
+                <circle cx="48" cy="32" r="4" fill="#27AE60"/>
+                <circle cx="32" cy="6" r="4" fill="#27AE60"/>
+                <line x1="16" y1="32" x2="32" y2="32" stroke="#27AE60" stroke-width="2"/>
+                <line x1="48" y1="32" x2="32" y2="32" stroke="#27AE60" stroke-width="2"/>
+            </svg>
+            Community Connect
+        </div>
+        <p>Mobile Apps Empowering Community Services</p>
+    </header>
+
+   <nav>
+   <a href="index.html">Home</a>
+    <a href="Research.html">Research Findings</a>
+    <a href="Awareness.html">Awareness Tips</a>
+    <a href="Survey.html">Survey</a>
+    <a href="MediaGallery.html" style="background: rgba(255,255,255,0.2);">Media Gallery</a>
+    <a href="Interactive.html">Interactive Chatbox</a>
+     <a href="Resources.html">Resources</a>
+    <a href="Community Forum.html">Community Forum</a>
+     <a href="Contact.html">Contact</a>
+</nav>
+
+    <div class="theme-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">🌙</div>
+
+    <main>
+        <section id="mediaGallery">
+            <h2>Interactive Media Gallery</h2>
+            <p style="text-align: center; margin-bottom: 40px; color: var(--text-color);">
+                Swipe or use arrows to explore visual resources about mobile apps in community services.
+            </p>
+
+            <!-- 1. INFOGRAPHICS SLIDER -->
+            <div class="gallery-category">
+                <h3>Infographics</h3>
+                <div class="slider-container">
+                    <button class="slider-btn left" onclick="slide('infographics', -1)">&#10094;</button>
+                    
+                    <div class="slider-track" id="infographics">
+                        <!-- Card 1: AI Tools -->
+                        <div class="media-card">
+                            <div class="media-img-wrapper">
+                                <img src="https://z-cdn-media.chatglm.cn/files/b9c25834-e88a-4e49-aafc-d61b2dc0923c.jpg?auth_key=1870867979-53c6878d88d341569945b1597620e049-0-14658f2568f92b12b93ad92293d55987" alt="Most Popular AI Tools">
+                            </div>
+                            <div class="media-caption">
+                                <h4>Most Popular AI Tools 2023</h4>
+                                <p>Overview of trending AI platforms and their market share.</p>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: Mobile App Development -->
+                        <div class="media-card">
+                            <div class="media-img-wrapper">
+                                <img src="https://z-cdn-media.chatglm.cn/files/d8c8c989-eebe-4c66-aa52-240bef92923b.png?auth_key=1870867979-fb4cbcf3a3d14872911a11552b2babbb-0-e0c76dc4909b7cf03b6a4cc0850fe20e" alt="Mobile App Development">
+                            </div>
+                            <div class="media-caption">
+                                <h4>Mobile App Ecosystem</h4>
+                                <p>Connecting diverse services to citizens through apps.</p>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Volunteering -->
+                        <div class="media-card">
+                            <div class="media-img-wrapper">
+                                <img src="https://z-cdn-media.chatglm.cn/files/f41cc1a8-4838-4b68-9015-c3983c1b7b7b.jpg?auth_key=1870867979-770451fd4e3f433fa63e16b5ecaf4633-0-ebd9b0f2d38c27b03d505c8857366af0" alt="Volunteering Infographic">
+                            </div>
+                            <div class="media-caption">
+                                <h4>Community Volunteering</h4>
+                                <p>Connecting hearts through community service.</p>
+                            </div>
+                        </div>
+
+                        <!-- Card 4: Travel Apps Data Usage -->
+                        <div class="media-card">
+                            <div class="media-img-wrapper">
+                                <img src="https://z-cdn-media.chatglm.cn/files/caaf6463-6eb9-4337-8acc-75cf8659df93.png?auth_key=1870868550-cdbba9c97d494a1bbf1dba1f5d6a4860-0-09b63738c6576a740ea2c85e8de1c350" alt="Travel Apps Data Usage">
+                            </div>
+                            <div class="media-caption">
+                                <h4>Community Services apps</h4>
+                                <p>Digital platform designed to connect residents, volunteers, and local organizations.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="slider-btn right" onclick="slide('infographics', 1)">&#10095;</button>
+                </div>
+            </div>
+
+            <!-- 2. AWARENESS POSTERS SLIDER (ADJUSTED FOR RESPONSIVE HEIGHT) -->
+            <div class="gallery-category">
+                <h3>Awareness Posters</h3>
+                <div class="slider-container">
+                    <button class="slider-btn left" onclick="slide('posters', -1)">&#10094;</button>
+                    
+                    <div class="slider-track" id="posters">
+                        <!-- POSTER 1: Family Planning CAS App -->
+                        <div class="media-card">
+                            <div class="media-img-wrapper">
+                                <!-- Removed specific class 'poster-wrapper' to use new ID-based CSS rules -->
+                                <img src="https://z-cdn-media.chatglm.cn/files/56c67ced-9dd3-4c25-b5bf-afeb195e8e9b.png?auth_key=1870949472-f01d0f8c49194b5ebb0e726b1b05dd23-0-965283dc2e0fa39e26f9b1a9de444c81" alt="Family Planning CAS App">
+                            </div>
+                            <div class="media-caption">
+                                <h4>Family  Research</h4>
+                                <p>Study on CAS App impact in Madhya Pradesh.</p>
+                            </div>
+                        </div>
+
+                        <!-- POSTER 2: CHW Solution -->
+                        <div class="media-card">
+                            <div class="media-img-wrapper">
+                                <img src="https://z-cdn-media.chatglm.cn/files/ba015def-1c1f-4b63-88cb-5a15c73efe41.png?auth_key=1870949472-93fb2e320e2e40b5ba9544983cdf18d4-0-64d7ad75b9c88aa9da3e2f010d7e2884" alt="CHW Solution">
+                            </div>
+                            <div class="media-caption">
+                                <h4>CHW Digital Tools</h4>
+                                <p>Empowering health workers with essential technology.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="slider-btn right" onclick="slide('posters', 1)">&#10095;</button>
+                </div>
+            </div>
+
+            <!-- 3. VIDEOS & TUTORIALS SLIDER -->
+            <div class="gallery-category">
+                <h3>Videos & Tutorials</h3>
+                <div class="slider-container">
+                    <button class="slider-btn left" onclick="slide('videos', -1)">&#10094;</button>
+                    
+                    <div class="slider-track" id="videos">
+                        <!-- Video 1 -->
+                        <div class="media-card">
+                            <div class="media-img-wrapper">
+                                <div class="video-wrapper">
+                                    <iframe src="https://www.youtube.com/embed/0n3oU1hcFdY" title="App Intro" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                            <div class="media-caption">
+                                <h4>App Onboarding</h4>
+                                <p>Getting started guide.</p>
+                            </div>
+                        </div>
+                        <!-- Video 2 -->
+                        <div class="media-card">
+                            <div class="media-img-wrapper">
+                                <div class="video-wrapper">
+                                    <iframe src="https://www.youtube.com/embed/aircAruvnKk" title="Reporting" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                            <div class="media-caption">
+                                <h4>Reporting Issues</h4>
+                                <p>Step-by-step tutorial.</p>
+                            </div>
+                        </div>
+                        <!-- Video 3 -->
+                        <div class="media-card">
+                            <div class="media-img-wrapper">
+                                <div class="video-wrapper">
+                                    <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" title="SOS" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                            <div class="media-caption">
+                                <h4>SOS Features</h4>
+                                <p>Emergency usage guide.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="slider-btn right" onclick="slide('videos', 1)">&#10095;</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Community Connect | Digital Community Services</p>
+    </footer>
+
+    <button id="topBtn" onclick="scrollToTop()" title="Go to top">▲</button>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // 1. Slider / Swipe Logic
+        function slide(elementId, direction) {
+            const container = document.getElementById(elementId);
+            
+            // Determine scroll amount based on section
+            // Posters are wider (380px), others are standard (300px)
+            // Gap is 25px
+            let scrollAmount = 325; // Default for Infographics/Videos (300 + 25)
+            
+            if (elementId === 'posters') {
+                scrollAmount = 405; // Specific for Posters (380 + 25)
+            }
+            
+            if (direction === 1) {
+                container.scrollLeft += scrollAmount;
+            } else {
+                container.scrollLeft -= scrollAmount;
+            }
+        }
+
+        // 2. Dark Mode
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.querySelector('.theme-toggle');
+            btn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        }
+
+        // 3. Scroll Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('show');
+            });
+        });
+        document.querySelectorAll('section').forEach(s => observer.observe(s));
+
+        // 4. Top Button
+        window.onscroll = function() {
+            const btn = document.getElementById('topBtn');
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+        function scrollToTop() { window.scrollTo({top: 0, behavior: 'smooth'}); }
+    </script>
+</body>
+</html>

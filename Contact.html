@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community Connect</title>
+
+<style>
+/* ---------- GLOBAL ---------- */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f7fb;
+    color: #333;
+    transition: background 0.3s, color 0.3s;
+    overflow-x: hidden;
+}
+
+.dark-mode {
+    background: #121212;
+    color: #f5f5f5;
+}
+
+/* ---------- HEADER ---------- */
+header {
+    background: linear-gradient(135deg, #2F80ED, #27AE60);
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.logo svg {
+    width: 45px;
+    animation: pulse 2s infinite;
+}
+
+header p {
+    margin-top: 10px;
+    font-size: 1.2em;
+}
+
+/* ---------- NAV ---------- */
+nav {
+    background: #1E88E5;
+    padding: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+nav a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1em;
+    display: inline-block;
+    transition: opacity 0.3s;
+}
+
+nav a:hover {
+    opacity: 0.8;
+}
+
+/* ---------- THEME LOGO ---------- */
+.theme-logo {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 2000;
+    background: rgba(255,255,255,0.2);
+    padding: 10px;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+    backdrop-filter: blur(4px);
+}
+
+.theme-logo:hover {
+    background: rgba(255,255,255,0.4);
+}
+
+/* ---------- SECTIONS ---------- */
+section {
+    padding: 50px 10%;
+    margin: 30px auto;
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 1200px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: 0.6s ease;
+}
+
+section.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dark-mode section {
+    background: #1e1e1e;
+}
+
+section h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2.2em;
+    color: #2F80ED;
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.dark-mode section h2 {
+    color: #64b5f6;
+}
+
+section h2::after {
+    content: '';
+    position: absolute;
+    width: 50%;
+    height: 4px;
+    left: 25%;
+    bottom: -10px;
+    background: #27AE60;
+    border-radius: 2px;
+}
+
+/* ---------- HOME INTRO ---------- */
+#home {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #fff;
+    padding: 80px 20px;
+    text-align: center;
+    margin-top: 0;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.intro-container {
+    max-width: 900px;
+    width: 90%;
+    padding: 40px;
+    background: rgba(0,0,0,0.4);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    animation: fadeInUp 2s ease forwards;
+    opacity: 0;
+    margin: 0 auto;
+}
+
+#home h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+#home h2::after {
+    background: #ffea00;
+    width: 0;
+    transition: width 0.5s ease;
+}
+
+#home:hover h2::after {
+    width: 100%;
+}
+
+#home p {
+    font-size: 1.2em;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.cta-button {
+    display: inline-block;
+    background: #FFD54F;
+    color: #333;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: transform 0.3s, background 0.3s;
+}
+
+.cta-button:hover {
+    transform: scale(1.05);
+    background: #ffca28;
+}
+
+/* ---------- OBJECTIVES BACKGROUND ---------- */
+#objectives {
+    background-image: url('https://www.bluestarindia.com/media/343685/banner-v4_320-x-306-1.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white; 
+    position: relative;
+}
+
+/* Overlay to make text readable */
+#objectives::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6);
+    border-radius: 12px;
+    z-index: 1;
+}
+
+#objectives .container {
+    position: relative;
+    z-index: 2;
+}
+
+#objectives h2 {
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+#objectives h2::after { background: #fff; }
+
+#objectives .cards .card {
+    background: rgba(51, 51, 51, 0.85); 
+    color: #fff;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+#objectives .card:hover {
+    background: rgba(51, 51, 51, 0.95);
+    transform: translateY(-8px);
+}
+
+/* ---------- CARDS ---------- */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.card {
+    background: linear-gradient(135deg, #E3F2FD, #E8F5E9);
+    padding: 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+    font-size: 1.1em;
+    border: 1px solid transparent;
+}
+
+.dark-mode .card {
+    background: #2c2c2c;
+    color: #e0e0e0;
+    border-color: #444;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+}
+
+.card-icon {
+    font-size: 3em;
+    margin-bottom: 15px;
+    display: block;
+}
+
+/* ---------- COUNTERS ---------- */
+.stats {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.stat-item {
+    flex: 1;
+    min-width: 200px;
+    padding: 20px;
+    background: rgba(47, 128, 237, 0.05);
+    border-radius: 10px;
+}
+
+.stat h3 {
+    font-size: 42px;
+    color: #2F80ED;
+    margin: 0;
+    font-weight: 800;
+}
+
+.dark-mode .stat h3 {
+    color: #64b5f6;
+}
+
+.stat p {
+    font-size: 1.1em;
+    color: #666;
+    margin-top: 5px;
+}
+
+.dark-mode .stat p {
+    color: #aaa;
+}
+
+/* ---------- AWARENESS CARDS ---------- */
+.awareness-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.awareness-card {
+    background: #f4f4f4;
+    border-radius: 10px;
+    padding: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+    border-bottom: 4px solid #2F80ED;
+}
+
+.dark-mode .awareness-card {
+    background: #2c2c2c;
+    border-bottom-color: #64b5f6;
+}
+
+.awareness-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+}
+
+.awareness-card .icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+/* ---------- ABOUT ---------- */
+.about-content {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.about-text {
+    flex: 1;
+    min-width: 300px;
+}
+
+.about-img {
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    transition: transform 0.4s, box-shadow 0.4s;
+}
+
+.about-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+}
+
+/* ---------- CONTACT SECTION (UPDATED) ---------- */
+.contact-ref-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.profile-card {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 5px 5px 15px #d1d1d1, -5px -5px 15px #ffffff;
+    border-top: 6px solid #2F80ED;
+    transition: transform 0.3s;
+}
+
+.profile-card:hover {
+    transform: translateY(-5px);
+}
+
+.dark-mode .profile-card {
+    background: #2c2c2c;
+    box-shadow: 5px 5px 15px #1a1a1a, -5px -5px 15px #3e3e3e;
+    border-top-color: #64b5f6;
+}
+
+/* UPDATED PROFILE IMAGE FOR CROPPING */
+.profile-img {
+    width: 180px;
+    height: 260px; 
+    border-radius: 15px;
+    object-fit: cover; /* CHANGED: Crops the image to fill the box */
+    object-position: top center; /* CHANGED: Focuses on the top/center (Face/Body) */
+    background-color: #333;
+    border: 4px solid #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    margin-bottom: 20px;
+}
+
+.profile-name {
+    font-size: 2em;
+    font-weight: 800;
+    color: #2F80ED;
+    margin: 0 auto 5px auto;
+    text-align: center;
+    width: 100%;
+}
+
+.dark-mode .profile-name {
+    color: #64b5f6;
+}
+
+.profile-role {
+    font-size: 1.1em;
+    color: #666;
+    margin-bottom: 10px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.dark-mode .profile-role {
+    color: #aaa;
+}
+
+/* Guidance Styles */
+.guidance-section {
+    background: rgba(47, 128, 237, 0.05);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    border-left: 3px solid #2F80ED;
+    text-align: center;
+}
+
+.dark-mode .guidance-section {
+    background: rgba(255,255,255,0.05);
+    border-left-color: #64b5f6;
+}
+
+.guidance-text {
+    font-size: 0.9em;
+    color: #555;
+    margin: 0;
+}
+
+.dark-mode .guidance-text {
+    color: #ccc;
+}
+
+.guidance-name {
+    font-weight: bold;
+    color: #2F80ED;
+    font-size: 1.1em;
+}
+
+.dark-mode .guidance-name {
+    color: #64b5f6;
+}
+
+/* Contact Details */
+.contact-details {
+    margin-bottom: 25px;
+    text-align: left;
+    background: rgba(255,255,255,0.5);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.dark-mode .contact-details {
+    background: rgba(0,0,0,0.2);
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    color: #444;
+    text-decoration: none;
+    font-size: 1.05em;
+    transition: color 0.2s;
+}
+
+.dark-mode .detail-item {
+    color: #ddd;
+}
+
+.detail-item:hover {
+    color: #2F80ED;
+}
+
+.detail-item:last-child {
+    margin-bottom: 0;
+}
+
+.detail-icon {
+    margin-right: 15px;
+    font-size: 1.3em;
+    width: 25px;
+    text-align: center;
+}
+
+/* QR Code Styles */
+.qr-container {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.qr-label {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 10px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.dark-mode .qr-label {
+    color: #aaa;
+}
+
+.qr-img {
+    width: 160px; 
+    height: 160px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.qr-img:hover {
+    transform: scale(1.05);
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+    background: linear-gradient(135deg, #2F80ED, #27AE60);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+}
+
+/* ---------- BACK TO TOP ---------- */
+#topBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #2F80ED;
+    color: white;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    font-size: 1.2em;
+    transition: background 0.3s;
+}
+
+#topBtn:hover {
+    background: #1565C0;
+}
+
+/* ---------- ANIMATIONS ---------- */
+@keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(50px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+    #home h2 { font-size: 2em; }
+    #home p { font-size: 1em; }
+    nav a { margin: 5px; font-size: 0.9em; }
+    section { padding: 40px 5%; width: 95%; }
+    .about-content { flex-direction: column; text-align: center; }
+    .about-img { margin-bottom: 20px; }
+}
+
+.animated-container {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: 0.8s ease;
+}
+
+section.show .animated-container {
+    opacity: 1;
+    transform: translateY(0);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
+            <rect x="18" y="8" width="28" height="48" rx="5" fill="#2F80ED"/>
+            <rect x="21" y="12" width="22" height="36" rx="2" fill="#E3F2FD"/>
+            <circle cx="32" cy="50" r="2" fill="#2F80ED"/>
+            <circle cx="16" cy="32" r="4" fill="#27AE60"/>
+            <circle cx="48" cy="32" r="4" fill="#27AE60"/>
+            <circle cx="32" cy="6" r="4" fill="#27AE60"/>
+            <line x1="16" y1="32" x2="32" y2="32" stroke="#27AE60" stroke-width="2"/>
+            <line x1="48" y1="32" x2="32" y2="32" stroke="#27AE60" stroke-width="2"/>
+            <line x1="32" y1="6" x2="32" y2="18" stroke="#27AE60" stroke-width="2"/>
+        </svg>
+        Community Connect
+    </div>
+    <p>Mobile Apps Empowering Community Services</p>
+</header>
+
+<nav>
+   <a href="index.html">Home</a>
+    <a href="Research.html">Research Findings</a>
+    <a href="Awareness.html">Awareness Tips</a>
+    <a href="Survey.html">Survey</a>
+    <a href="MediaGallery.html">Media Gallery</a>
+    <a href="Interactive.html">Interactive Chatbox</a>
+     <a href="Resources.html">Resources</a>
+    <a href="Community Forum.html">Community Forum</a>
+     <a href="Contact.html">Contact</a>
+</nav>
+
+<div class="theme-logo" onclick="toggleDarkMode()" title="Switch Theme">🌙</div>
+
+
+
+
+
+
+
+
+
+<!-- CONTACT SECTION UPDATED -->
+<section id="contact-ref">
+  <div class="animated-container">
+    <!-- CHANGED TO H2 FOR GREEN LINE -->
+    <h2>Contact/References</h2>
+    
+    <div class="contact-ref-wrapper">
+      
+      <!-- DEVELOPER PROFILE CARD -->
+      <div class="profile-card">
+        <!-- UPDATED IMAGE SOURCE AND STYLES FOR CROPPED PHOTO -->
+        <img src="https://z-cdn-media.chatglm.cn/files/06b0a6fd-2d23-4fbb-88bc-5fa7aa2b31af.png?auth_key=1870876761-e0f0c054f4824c7a94e5a5c89b1001d1-0-2d55ba7dcc10d248a991c2600cff60ed" alt="Mahek Singh" class="profile-img">
+        
+        <h2 class="profile-name">Mahek Singh</h2>
+        <div class="profile-role">Project Developer</div>
+        
+        <!-- Guidance Section -->
+        <div class="guidance-section">
+            <p class="guidance-text">Under the guidance of<br><span class="guidance-name">Ms. Ansari Nusrat</span></p>
+        </div>
+        
+        <!-- Contact Details -->
+        <div class="contact-details">
+            <a href="tel:+1234567890" class="detail-item">
+                <span class="detail-icon">📞</span>
+                <span>+91 8484562356</span>
+            </a>
+            <a href="mailto:maheksingh@example.com" class="detail-item">
+                <span class="detail-icon">✉️</span>
+                <span>maheksingh647@gmail.com</span>
+            </a>
+            <!-- Location -->
+            <a href="https://maps.google.com/?q=Bhiwandi,Thane,Maharashtra,India" target="_blank" class="detail-item">
+                <span class="detail-icon">📍</span>
+                <span> Thane, Maharashtra, India</span>
+            </a>
+        </div>
+
+        <!-- QR Code -->
+        <div class="qr-container">
+            <p class="qr-label">Scan for Contact Details</p>
+            <!-- 
+               UPDATED QR CODE SOURCE 
+            -->
+            <img src="https://z-cdn-media.chatglm.cn/files/a4469217-8de9-4e45-a4bc-8212af9e322b.png?auth_key=1870357508-5e5655269d8b409bb4fb3405ed7b1d83-0-734a89d3ed1aafe397f75513e56891c6" alt="QR Code" class="qr-img">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+    <p>© 2026 Community Connect | Digital Community Services</p>
+</footer>
+
+<button id="topBtn" onclick="scrollToTop()" title="Back to Top">↑</button>
+
+<script>
+/* ---------- SCROLL REVEAL ---------- */
+const sections = document.querySelectorAll("section");
+window.addEventListener("scroll", () => {
+    sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        if (top < window.innerHeight - 100) {
+            sec.classList.add("show");
+        }
+    });
+});
+window.addEventListener("load", () => {
+    sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        if (top < window.innerHeight) sec.classList.add("show");
+    });
+});
+
+/* ---------- COUNTER ANIMATION ---------- */
+const counters = document.querySelectorAll("[data-count]");
+const animateCounters = () => {
+    counters.forEach(counter => {
+        const rect = counter.getBoundingClientRect();
+        if(rect.top < window.innerHeight && !counter.classList.contains('counted')) {
+            counter.classList.add('counted');
+            let start = 0;
+            const end = parseInt(counter.dataset.count);
+            const speed = 50; 
+            const updateCounter = () => {
+                const increment = Math.ceil(end / speed);
+                start += increment;
+                if (start < end) {
+                    counter.textContent = start;
+                    setTimeout(updateCounter, 30);
+                } else {
+                    counter.textContent = end;
+                    if(end === 98) counter.textContent += "%";
+                    if(end > 1000) counter.textContent += "+";
+                }
+            };
+            updateCounter();
+        }
+    });
+};
+window.addEventListener("scroll", animateCounters);
+
+/* ---------- DARK MODE ---------- */
+function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+}
+
+/* ---------- BACK TO TOP ---------- */
+const topBtn = document.getElementById("topBtn");
+window.onscroll = () => {
+    topBtn.style.display = window.scrollY > 300 ? "block" : "none";
+};
+
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+</script>
+
+</body>
+</html>

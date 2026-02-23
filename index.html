@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community Connect</title>
+
+<style>
+/* ---------- GLOBAL ---------- */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f7fb;
+    color: #333;
+    transition: background 0.3s, color 0.3s;
+}
+
+.dark-mode {
+    background: #121212;
+    color: #f5f5f5;
+}
+
+/* ---------- HEADER ---------- */
+header {
+    background: linear-gradient(135deg, #2F80ED, #27AE60);
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.logo svg {
+    width: 45px;
+    animation: pulse 2s infinite;
+}
+
+header p {
+    margin-top: 10px;
+    font-size: 1.2em;
+}
+
+/* ---------- NAV ---------- */
+nav {
+    background: #1E88E5;
+    padding: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+nav button {
+    background: #FFD54F;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* ---------- THEME LOGO ---------- */
+.theme-logo {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* ---------- SECTIONS ---------- */
+section {
+    padding: 50px 10%;
+    margin: 30px auto;
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: 0.6s ease;
+}
+
+section.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dark-mode section {
+    background: #1e1e1e;
+}
+
+/* ---------- HOME INTRO ---------- */
+#home {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #fff;
+    padding: 50px 20px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.intro-container {
+    max-width: 900px;
+    width: 90%;
+    padding: 40px;
+    
+    /* Solid white background */
+    background: #ffffff;
+    
+    border-radius: 20px;
+    
+    /* Soft shadow with a slight blue tint for a modern feel */
+    box-shadow: 0 15px 35px rgba(100, 100, 255, 0.1);
+    
+    /* Add a colorful top border accent */
+    border-top: 5px solid #6c5ce7; 
+    
+    animation: fadeInUp 2s ease forwards;
+    opacity: 0;
+    margin: 0 auto;
+    
+    /* Dark text for readability */
+    color: #444;
+}
+#home h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    position: relative;
+    display: inline-block;
+}
+
+#home h2::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 3px;
+    left: 0;
+    bottom: -5px;
+    background: #ffea00;
+    transition: width 0.5s ease;
+}
+
+#home h2:hover::after {
+    width: 100%;
+}
+    /* ---------- ABOUT CONTENT LAYOUT ---------- */
+.about-content {
+    display: flex;
+    ...
+}
+
+/* ---------- OBJECTIVES BACKGROUND ---------- */
+/* Section Container */
+#objectives {
+  padding: 80px 20px;
+  background-color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden; /* Ensures animation doesn't cause scrollbars */
+}
+
+.animated-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Heading Style */
+.section-heading {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 50px;
+  color: #2d3436;
+  opacity: 0;
+  animation: fadeInDown 1s ease forwards;
+}
+
+/* Grid Layout */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+}
+
+/* Card Base Styles */
+.card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px 25px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.05);
+  
+  /* Animation Setup */
+  opacity: 0; /* Hidden initially */
+  transform: translateY(50px); /* Pushed down initially */
+  animation: slideUpFade 0.8s ease forwards;
+  
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Staggered Delays: Makes cards appear one by one */
+.card:nth-child(1) { animation-delay: 0.2s; }
+.card:nth-child(2) { animation-delay: 0.4s; }
+.card:nth-child(3) { animation-delay: 0.6s; }
+.card:nth-child(4) { animation-delay: 0.8s; }
+
+/* Hover Effect: Card lifts and shadow deepens */
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+/* Icon Box Styling */
+.icon-box {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin: 0 auto 20px auto;
+  
+  /* Icon continuous floating animation */
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Text Styling */
+.card h3 {
+  margin: 15px 0;
+  color: #2d3436;
+  font-size: 1.25rem;
+}
+
+.card p {
+  color: #636e72;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* --- Animations --- */
+
+/* 1. Slide Up & Fade In (For Cards) */
+@keyframes slideUpFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 2. Fade In Down (For Title) */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 3. Floating Effect (For Icons) */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+  .section-heading { font-size: 2rem; }
+  .cards { grid-template-columns: 1fr; }
+}
+/* ---------- SERVICE CARDS ---------- */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: linear-gradient(135deg, #E3F2FD, #E8F5E9);
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+    font-size: 1.1em;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+}
+
+/* ---------- COUNTERS ---------- */
+.stats {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    flex-wrap: wrap;
+}
+
+.stat h3 {
+    font-size: 32px;
+    color: #2F80ED;
+    margin: 0;
+}
+
+/* ---------- AWARENESS CARDS ---------- */
+/* Section Setup */
+.scope-section {
+  padding: 80px 20px;
+  background-color: #f0f2f5; /* Light grey-blue background */
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  text-align: center;
+}
+
+/* Title Styling */
+.section-title {
+  font-size: 2.8rem;
+  color: #2c3e50;
+  margin-bottom: 50px;
+  position: relative;
+  display: inline-block;
+}
+
+/* Decorative line under title */
+.section-title::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #6c5ce7, #a29bfe);
+  margin: 15px auto 0;
+  border-radius: 2px;
+}
+
+/* Grid Layout for Cards */
+.awareness-cards {
+  display: grid;
+  /* Responsive columns: adjusts automatically */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Base Card Styling */
+.awareness-card {
+  background: #ffffff;
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy effect */
+  border-bottom: 5px solid transparent; /* Prepare for colored border */
+  
+  /* Animation Initial State */
+  opacity: 0;
+  transform: translateY(40px);
+  animation: slideUpFade 0.8s ease forwards;
+}
+
+/* Staggered Animation Delays */
+.awareness-card:nth-child(1) { animation-delay: 0.1s; }
+.awareness-card:nth-child(2) { animation-delay: 0.2s; }
+.awareness-card:nth-child(3) { animation-delay: 0.3s; }
+.awareness-card:nth-child(4) { animation-delay: 0.4s; }
+.awareness-card:nth-child(5) { animation-delay: 0.5s; }
+
+/* Hover Effect: Lift Up and Color Pop */
+.awareness-card:hover {
+  transform: translateY(-15px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+
+/* Icon Styling */
+.awareness-card .icon {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  display: inline-block;
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
+}
+
+.awareness-card:hover .icon {
+  transform: scale(1.2) rotate(5deg);
+}
+
+/* Text Styling */
+.awareness-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.awareness-card p {
+  color: #666;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* --- UNIQUE COLOR THEMES FOR EACH CARD --- */
+
+/* Card 1: Blue (Target Audience) */
+.card-1 { border-bottom-color: #0984e3; }
+.card-1:hover { box-shadow: 0 20px 40px rgba(9, 132, 227, 0.2); }
+.card-1 h3 { color: #0984e3; }
+
+/* Card 2: Purple (Areas Addressed) */
+.card-2 { border-bottom-color: #6c5ce7; }
+.card-2:hover { box-shadow: 0 20px 40px rgba(108, 92, 231, 0.2); }
+.card-2 h3 { color: #6c5ce7; }
+
+/* Card 3: Red/Orange (Limitations) */
+.card-3 { border-bottom-color: #d63031; }
+.card-3:hover { box-shadow: 0 20px 40px rgba(214, 48, 49, 0.2); }
+.card-3 h3 { color: #d63031; }
+
+/* Card 4: Teal/Green (Focus) */
+.card-4 { border-bottom-color: #00b894; }
+.card-4:hover { box-shadow: 0 20px 40px rgba(0, 184, 148, 0.2); }
+.card-4 h3 { color: #00b894; }
+
+/* Card 5: Orange/Yellow (Benefits) */
+.card-5 { border-bottom-color: #e17055; }
+.card-5:hover { box-shadow: 0 20px 40px rgba(225, 112, 85, 0.2); }
+.card-5 h3 { color: #e17055; }
+
+/* --- ANIMATION KEYFRAMES --- */
+@keyframes slideUpFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .section-title { font-size: 2rem; }
+  .awareness-cards { grid-template-columns: 1fr; }
+}
+
+/* ---------- BACK TO TOP ---------- */
+#topBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #2F80ED;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+}
+
+/* ---------- ANIMATIONS ---------- */
+@keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+}
+
+@keyframes textFade {
+    0% {opacity: 0.7;}
+    50% {opacity: 1;}
+    100% {opacity: 0.7;}
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+    #home h2 { font-size: 2em; }
+    #home p { font-size: 1em; }
+}
+ /* ---------- ABOUT SECTION ANIMATION ---------- */
+.animated-container {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: 0.8s ease;
+}
+
+section.show .animated-container {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ---------- ABOUT CONTENT LAYOUT ---------- */
+.about-content {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.about-img {
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.4s, box-shadow 0.4s;
+}
+
+.about-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+    .about-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about-img {
+        margin-bottom: 20px;
+    }
+}
+
+#about h2 {
+    text-align: center;
+    font-size: 2.5em;
+    position: relative;
+    display: inline-block;
+    color: #2F80ED;
+}
+
+#about h2::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 3px;
+    left: 0;
+    bottom: -5px;
+    background: #FFD700;
+    transition: width 0.5s ease;
+}
+
+#about h2:hover::after {
+    width: 100%;
+}
+
+#about p {
+    font-size: 1.2em;
+    line-height: 1.6;
+    color: #333;
+}
+   
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
+            <rect x="18" y="8" width="28" height="48" rx="5" fill="#2F80ED"/>
+            <rect x="21" y="12" width="22" height="36" rx="2" fill="#E3F2FD"/>
+            <circle cx="32" cy="50" r="2" fill="#2F80ED"/>
+            <circle cx="16" cy="32" r="4" fill="#27AE60"/>
+            <circle cx="48" cy="32" r="4" fill="#27AE60"/>
+            <circle cx="32" cy="6" r="4" fill="#27AE60"/>
+            <line x1="16" y1="32" x2="32" y2="32" stroke="#27AE60" stroke-width="2"/>
+            <line x1="48" y1="32" x2="32" y2="32" stroke="#27AE60" stroke-width="2"/>
+            <line x1="32" y1="6" x2="32" y2="18" stroke="#27AE60" stroke-width="2"/>
+        </svg>
+        Community Connect
+    </div>
+    <p>Mobile Apps Empowering Community Services</p>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="Research.html">Research Findings</a>
+    <a href="Awareness.html">Awareness Tips</a>
+    <a href="Survey.html">Survey</a>
+    <a href="MediaGallery.html">Media Gallery</a>
+    <a href="Interactive.html">Interactive Chatbox</a>
+     <a href="Resources.html">Resources</a>
+    <a href="Community%20forum.html">Community Forum</a>
+     <a href="Contact.html">Contact</a>
+</nav>
+
+<div class="theme-logo" onclick="toggleDarkMode()" title="Switch Theme">🌙</div>
+
+<section id="home">
+  <div class="intro-container">
+    <h2>Introduction</h2>
+    <p>
+      Mobile applications help communities access essential services such as healthcare,
+      education, safety, and welfare quickly and efficiently.These apps allow users to quickly locate nearby facilities, report issues, receive alerts, and participate in community programs from the convenience of their smartphones.
+    </p>
+  </div>
+</section>
+    <section id="objectives">
+  <div class="animated-container">
+    <h2 class="section-heading">Objectives</h2>
+    
+    <div class="cards">
+      <!-- Card 1: Red/Pink Theme -->
+      <div class="card">
+        <div class="icon-box" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); color: #d63031;">
+          🎯
+        </div>
+        <h3>Raise Awareness</h3>
+        <p>Inform the community about essential services such as healthcare, education, and emergency support through mobile platforms.</p>
+      </div>
+
+      <!-- Card 2: Green/Teal Theme -->
+      <div class="card">
+        <div class="icon-box" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #00b894;">
+          🤝
+        </div>
+        <h3>Encourage Participation</h3>
+        <p>Motivate volunteers, NGOs, and citizens to actively participate in community initiatives and social welfare programs.</p>
+      </div>
+
+      <!-- Card 3: Blue/Indigo Theme -->
+      <div class="card">
+        <div class="icon-box" style="background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); color: #0984e3;">
+          📱
+        </div>
+        <h3>Easy Access</h3>
+        <p>Provide quick and convenient access to services and resources through mobile apps to enhance engagement and reach.</p>
+      </div>
+
+      <!-- Card 4: Orange/Yellow Theme -->
+      <div class="card">
+        <div class="icon-box" style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #e17055;">
+          📊
+        </div>
+        <h3>Track Impact</h3>
+        <p>Collect feedback and monitor results to improve services and measure the effectiveness of community awareness campaigns.</p>
+      </div>
+    </div>
+  </div>
+</section>
+    <section class="scope-section">
+  <h1 class="section-title">Scope of Awareness</h1>
+  
+  <div class="awareness-cards">
+    <!-- Card 1: Blue Theme -->
+    <div class="awareness-card card-1">
+      <div class="icon">👥</div>
+      <h3>Target Audience</h3>
+      <p>The program focuses on local communities, students, volunteers, NGOs, and citizens who need access to healthcare, education, safety, and emergency support.</p>
+    </div>
+
+    <!-- Card 2: Purple Theme -->
+    <div class="awareness-card card-2">
+      <div class="icon">📍</div>
+      <h3>Areas Addressed</h3>
+      <p>Urban and rural communities, schools, local organizations, and neighborhoods where awareness about essential services and mobile app accessibility is crucial.</p>
+    </div>
+
+    <!-- Card 3: Red/Orange Theme -->
+    <div class="awareness-card card-3">
+      <div class="icon">⚠️</div>
+      <h3>Limitations</h3>
+      <p>Limited internet access in remote areas, language barriers, and technological literacy can affect how effectively awareness is spread.</p>
+    </div>
+
+    <!-- Card 4: Teal/Green Theme -->
+    <div class="awareness-card card-4">
+      <div class="icon">🎯</div>
+      <h3>Focus of Program</h3>
+      <p>Educate communities about essential services, encourage participation in local initiatives, and ensure timely information through mobile platforms.</p>
+    </div>
+
+    <!-- Card 5: Yellow/Gold Theme -->
+    <div class="awareness-card card-5">
+      <div class="icon">💡</div>
+      <h3>Community Benefits</h3>
+      <p>By using our website and mobile app, communities can easily access resources, report issues, engage in volunteer programs, and stay informed about local events.</p>
+    </div>
+  </div>
+</section>
+
+
+
+<section id="services">
+    <h2>Available Community Services</h2>
+    <div class="cards">
+        <div class="card">🏥 Healthcare Services</div>
+        <div class="card">🚨 Emergency Support</div>
+        <div class="card">🎓 Education & Learning</div>
+        <div class="card">🤝 Volunteer & NGO Help</div>
+    </div>
+</section>
+
+
+
+
+<footer>
+    <p>© 2026 Community Connect | Digital Community Services</p>
+</footer>
+
+<button id="topBtn" onclick="scrollToTop()">↑</button>
+
+<script>
+/* ---------- SCROLL REVEAL ---------- */
+const sections = document.querySelectorAll("section");
+window.addEventListener("scroll", () => {
+    sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top;
+        if (top < window.innerHeight - 100) {
+            sec.classList.add("show");
+        }
+    });
+});
+
+/* ---------- COUNTER ANIMATION ---------- */
+const counters = document.querySelectorAll("[data-count]");
+counters.forEach(counter => {
+    let start = 0;
+    const end = parseInt(counter.dataset.count);
+    const speed = 50;
+
+    const updateCounter = () => {
+        start += Math.ceil(end / speed);
+        if (start < end) {
+            counter.textContent = start;
+            setTimeout(updateCounter, 40);
+        } else {
+            counter.textContent = end;
+        }
+    };
+    updateCounter();
+});
+
+/* ---------- DARK MODE ---------- */
+function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+}
+
+/* ---------- BACK TO TOP ---------- */
+const topBtn = document.getElementById("topBtn");
+window.onscroll = () => {
+    topBtn.style.display = window.scrollY > 300 ? "block" : "none";
+};
+
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+</script>
+
+</body>
+</html>
